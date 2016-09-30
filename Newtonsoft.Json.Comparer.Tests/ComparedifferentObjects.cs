@@ -1,7 +1,6 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Newtonsoft.Json.Comparer.Tests.TestObjects;
-using Newtonsoft.Json.Linq;
+using System;
 using Xunit;
 
 namespace Newtonsoft.Json.Comparer.Tests
@@ -11,10 +10,9 @@ namespace Newtonsoft.Json.Comparer.Tests
         [Fact]
         public void ObjectsWithDifferentValueForDateTimeShouldBeDifferent()
         {
-            var jobject = JToken.FromObject(new SimpleObject { DateTimeProperty = new DateTime(2345, 1, 1) });
-            var jobject2 = JToken.FromObject(new SimpleObject { DateTimeProperty = new DateTime(2000, 1, 1) });
-
-            var compareResult = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
+            var compareResult = new JTokenComparer(new IndexArrayKeySelector()).Compare(
+                new SimpleObject { DateTimeProperty = new DateTime(2345, 1, 1) },
+                new SimpleObject { DateTimeProperty = new DateTime(2000, 1, 1) });
 
             compareResult.ComparrisonResult.Should().Be(ComparisonResult.Different, because: "The JObjects are created with different datetime");
         }

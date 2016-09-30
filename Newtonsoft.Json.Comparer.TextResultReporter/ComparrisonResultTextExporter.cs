@@ -31,7 +31,6 @@ namespace Newtonsoft.Json.Comparer.TextResultReporter
         {
             if (propertyComparrison.PropertyValueComparissonResult.Type == ComparedTokenType.Value)
             {
-
                 return WithIndent($"{propertyComparrison.Key} - {ReportValue((JValueComparrisonResult)propertyComparrison.PropertyValueComparissonResult, resultsToReport)}", indent);
             }
             else

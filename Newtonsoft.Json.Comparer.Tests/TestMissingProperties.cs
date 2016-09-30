@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Newtonsoft.Json.Comparer.Tests.TestObjects;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 using Xunit;
 
 namespace Newtonsoft.Json.Comparer.Tests

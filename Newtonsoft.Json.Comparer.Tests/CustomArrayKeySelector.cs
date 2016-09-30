@@ -2,7 +2,7 @@
 
 namespace Newtonsoft.Json.Comparer.Tests
 {
-    class CustomArrayKeySelector : IArrayKeySelector
+    internal class CustomArrayKeySelector : IArrayKeySelector
     {
         public object SelectArrayKey(JToken token, int index)
         {
