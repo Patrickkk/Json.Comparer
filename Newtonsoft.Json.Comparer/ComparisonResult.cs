@@ -1,5 +1,8 @@
 ﻿namespace Newtonsoft.Json.Comparer
 {
+    /// <summary>
+    /// The result of a comparrison.
+    /// </summary>
     public enum ComparisonResult
     {
         /// <summary>

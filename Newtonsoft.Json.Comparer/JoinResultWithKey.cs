@@ -1,5 +1,10 @@
 ﻿namespace Newtonsoft.Json.Comparer
 {
+    /// <summary>
+    /// The reult of a outter join of 2 elements based on a given key.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
     public class JoinResultWithKey<T, TKey>
     {
         public TKey Key { get; set; }

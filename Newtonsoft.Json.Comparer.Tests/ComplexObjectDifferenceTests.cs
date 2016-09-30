@@ -22,10 +22,10 @@ namespace Newtonsoft.Json.Comparer.Tests
             var compareResult = (JObjectComparrisonResult)new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
 
             compareResult.ComparrisonResult.Should().Be(ComparisonResult.Different);
-            var childrenComparrison = (JPropertyComparrisonResult)compareResult.PropertyComparrison.First(x => x.Key == "Children");
+            var childrenComparrison = (JPropertyComparrisonResult)compareResult.PropertyComparrisons.First(x => x.Key == "Children");
             var childrenValueComparrison = (JArrayComparrisonResult)childrenComparrison.PropertyValueComparissonResult;
             childrenValueComparrison.ComparrisonResult.Should().Be(ComparisonResult.Different);
-            childrenValueComparrison.ComparrisonResults.All(x => x.ComparrisonResult == ComparisonResult.MissingInSource2).Should().Be(true);
+            childrenValueComparrison.ArrayElementComparrisons.All(x => x.ComparrisonResult == ComparisonResult.MissingInSource2).Should().Be(true);
 
             var report = ComparrisonResultTextExporter.Report(compareResult, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 });
 

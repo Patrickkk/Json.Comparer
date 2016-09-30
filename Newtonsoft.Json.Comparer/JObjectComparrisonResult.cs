@@ -2,10 +2,19 @@
 
 namespace Newtonsoft.Json.Comparer
 {
+    /// <summary>
+    /// A ComparisonResult for JObjectToken elements.
+    /// </summary>
     public class JObjectComparrisonResult : JTokenComparrisonResult
     {
-        public override ComparisonResultType Type { get; set; } = ComparisonResultType.Object;
+        /// <summary>
+        /// The type of JToken compared
+        /// </summary>
+        public override ComparedTokenType Type { get; } = ComparedTokenType.Object;
 
-        public IEnumerable<JTokenComparrisonResult> PropertyComparrison { get; set; } = new List<JTokenComparrisonResult>();
+        /// <summary>
+        /// The comparrisonResults for all properties in the object.
+        /// </summary>
+        public IEnumerable<JTokenComparrisonResult> PropertyComparrisons { get; set; } = new List<JTokenComparrisonResult>();
     }
 }

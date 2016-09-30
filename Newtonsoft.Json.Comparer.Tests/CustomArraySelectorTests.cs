@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Newtonsoft.Json.Comparer.Tests.TestObjects;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Newtonsoft.Json.Comparer.Tests
@@ -24,6 +25,12 @@ namespace Newtonsoft.Json.Comparer.Tests
             var result = (JObjectComparrisonResult)new JTokenComparer(new CustomArrayKeySelector()).CompareTokens("root", jobject, jobject2);
 
             result.ComparrisonResult.ShouldBeEquivalentTo(ComparisonResult.Identical);
+        }
+
+        [Fact]
+        public void WhenArraySelectorResultsInDuplicateKeysItShouldThrowAnException()
+        {
+            throw new NotImplementedException();
         }
     }
 }

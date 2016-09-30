@@ -29,7 +29,7 @@ namespace Newtonsoft.Json.Comparer.TextResultReporter
 
         private static string ReportProperty(JPropertyComparrisonResult propertyComparrison, IEnumerable<ComparisonResult> resultsToReport, int indent = 0)
         {
-            if (propertyComparrison.PropertyValueComparissonResult.Type == ComparisonResultType.Value)
+            if (propertyComparrison.PropertyValueComparissonResult.Type == ComparedTokenType.Value)
             {
 
                 return WithIndent($"{propertyComparrison.Key} - {ReportValue((JValueComparrisonResult)propertyComparrison.PropertyValueComparissonResult, resultsToReport)}", indent);
@@ -49,7 +49,7 @@ namespace Newtonsoft.Json.Comparer.TextResultReporter
                 {
                     return WithIndent($"{arrayComparrison.Key} - {arrayComparrison.ComparrisonResult} - array", indent);
                 }
-                var elementsToReport = arrayComparrison.ComparrisonResults.Where(comparrison => resultsToReport.Contains(comparrison.ComparrisonResult));
+                var elementsToReport = arrayComparrison.ArrayElementComparrisons.Where(comparrison => resultsToReport.Contains(comparrison.ComparrisonResult));
 
                 return string.Join(Environment.NewLine, elementsToReport.Select(x => Report(x, resultsToReport, indent)).Where(x => !string.IsNullOrEmpty(x)));
             }
@@ -68,7 +68,7 @@ namespace Newtonsoft.Json.Comparer.TextResultReporter
                     return WithIndent($"{objectcomparrison.Key} - {objectcomparrison.ComparrisonResult} - object ", indent);
                 }
 
-                var propertiesToReport = objectcomparrison.PropertyComparrison.Where(propertyComparrison => resultsToReport.Contains(propertyComparrison.ComparrisonResult));
+                var propertiesToReport = objectcomparrison.PropertyComparrisons.Where(propertyComparrison => resultsToReport.Contains(propertyComparrison.ComparrisonResult));
 
                 return WithIndent($"{objectcomparrison.Key} - {objectcomparrison.ComparrisonResult} - object", indent) + Environment.NewLine
                     + string.Join(Environment.NewLine, propertiesToReport.Select(x => Report(x, resultsToReport, indent + 1)).Where(x => !string.IsNullOrEmpty(x)));

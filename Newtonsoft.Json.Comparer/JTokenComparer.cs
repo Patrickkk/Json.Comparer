@@ -1,19 +1,27 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 
 namespace Newtonsoft.Json.Comparer
 {
     public class JTokenComparer
     {
-        readonly IArrayKeySelector arrayKeySelector;
+        private readonly IArrayKeySelector arrayKeySelector;
 
         public JTokenComparer(IArrayKeySelector arrayKeySelector)
         {
             this.arrayKeySelector = arrayKeySelector;
         }
-        public JTokenComparrisonResult CompareTokens(string key, JToken token1, JToken token2)
+
+        /// <summary>
+        /// Compares the given tokens
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="token1"></param>
+        /// <param name="token2"></param>
+        /// <returns></returns>
+        public virtual JTokenComparrisonResult CompareTokens(string key, JToken token1, JToken token2)
         {
             if (token1 != null && token2 != null)
             {
@@ -55,17 +63,24 @@ namespace Newtonsoft.Json.Comparer
             }
         }
 
-        public JTokenComparrisonResult CompareTokens(JoinResultWithKey<JToken, string> values)
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public virtual JTokenComparrisonResult CompareTokens(JoinResultWithKey<JToken, string> values)
         {
             return CompareTokens(values.Key, values.Value1, values.Value2);
         }
 
-        public JTokenComparrisonResult CompareTokens(JoinResultWithKey<JToken, int> values)
-        {
-            return CompareTokens(values.Key.ToString(), values.Value1, values.Value2);
-        }
-
-        private JValueComparrisonResult CompareValue(string key, JValue token1, JValue token2)
+        /// <summary>
+        /// Compares 2 JValue tokens.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="token1"></param>
+        /// <param name="token2"></param>
+        /// <returns></returns>
+        public virtual JValueComparrisonResult CompareValue(string key, JValue token1, JValue token2)
         {
             if (token1 == null) { return new JValueComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource1, Source1Value = null, Source2Value = token2.Value?.ToString() }; }
             if (token2 == null) { return new JValueComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource2, Source1Value = token1.Value?.ToString(), Source2Value = null }; }
@@ -79,7 +94,14 @@ namespace Newtonsoft.Json.Comparer
             };
         }
 
-        public JArrayComparrisonResult CompareArrays(string key, JArray token1, JArray token2)
+        /// <summary>
+        /// Compares 2 JArray tokens.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="token1"></param>
+        /// <param name="token2"></param>
+        /// <returns></returns>
+        public virtual JArrayComparrisonResult CompareArrays(string key, JArray token1, JArray token2)
         {
             if (token1 == null) { return new JArrayComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
             if (token2 == null) { return new JArrayComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
@@ -91,11 +113,18 @@ namespace Newtonsoft.Json.Comparer
             {
                 Key = key,
                 ComparrisonResult = ComparrisonResultFromCollection(arrayContentComparrisonResult),
-                ComparrisonResults = arrayContentComparrisonResult
+                ArrayElementComparrisons = arrayContentComparrisonResult
             };
         }
 
-        public JTokenComparrisonResult CompareObjects(string key, JObject object1, JObject object2)
+        /// <summary>
+        /// Compares 2 JObject tokens.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="object1"></param>
+        /// <param name="object2"></param>
+        /// <returns></returns>
+        public virtual JTokenComparrisonResult CompareObjects(string key, JObject object1, JObject object2)
         {
             if (object1 == null) { return new JObjectComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
             if (object2 == null) { return new JObjectComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
@@ -105,12 +134,17 @@ namespace Newtonsoft.Json.Comparer
             return new JObjectComparrisonResult
             {
                 Key = key,
-                PropertyComparrison = propertyComparrison,
+                PropertyComparrisons = propertyComparrison,
                 ComparrisonResult = ComparrisonResultFromCollection(propertyComparrison)
             };
         }
 
-        private ComparisonResult ComparrisonResultFromCollection(IEnumerable<JTokenComparrisonResult> collection)
+        /// <summary>
+        /// Get the comparrisonResult from the collection. returns equal if all elements are present and equal. returns difference if any element is missing or different.
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <returns></returns>
+        public virtual ComparisonResult ComparrisonResultFromCollection(IEnumerable<JTokenComparrisonResult> collection)
         {
             if (collection.Any(x => x.ComparrisonResult != ComparisonResult.Identical))
             {
@@ -127,7 +161,14 @@ namespace Newtonsoft.Json.Comparer
             return CompareProperty(joinedProperty.Key, joinedProperty.Value1, joinedProperty.Value2);
         }
 
-        private JPropertyComparrisonResult CompareProperty(string key, JProperty property1, JProperty property2)
+        /// <summary>
+        /// Compares 2 JProprty tokens.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="property1"></param>
+        /// <param name="property2"></param>
+        /// <returns></returns>
+        public virtual JPropertyComparrisonResult CompareProperty(string key, JProperty property1, JProperty property2)
         {
             if (property1 == null) { return new JPropertyComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
             if (property2 == null) { return new JPropertyComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
@@ -142,7 +183,16 @@ namespace Newtonsoft.Json.Comparer
             };
         }
 
-        public IEnumerable<JoinResultWithKey<T, TKey>> OuterJoin<T, TKey>(IEnumerable<T> source1, IEnumerable<T> source2, Func<T, int, TKey> keySelector)
+        /// <summary>
+        /// Joins 2 collections using the keyselector.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="source1"></param>
+        /// <param name="source2"></param>
+        /// <param name="keySelector"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<JoinResultWithKey<T, TKey>> OuterJoin<T, TKey>(IEnumerable<T> source1, IEnumerable<T> source2, Func<T, int, TKey> keySelector)
             where T : class
         {
             if (keySelector == null)
@@ -150,12 +200,17 @@ namespace Newtonsoft.Json.Comparer
                 throw new ArgumentNullException(nameof(keySelector));
             }
 
-            // TODO check duplicates
-
             var source1WithIndex = source1.Select((value, index) => new { value, key = keySelector(value, index) });
             var source2WithIndex = source2.Select((value, index) => new { value, key = keySelector(value, index) });
 
             var keys = source1WithIndex.Concat(source2WithIndex).Select(x => x.key).OrderBy(x => x).Distinct();
+            var duplicateKeys = source1WithIndex.Concat(source2WithIndex).Select(x => x.key).GroupBy(x => x).Where(x => x.Count() > 2);
+
+            if (duplicateKeys.Any())
+            {
+                throw new Exception($"duplicate keys when joining found. The following duplicate keys were found {string.Join(",", duplicateKeys)}.");
+            }
+
             var source1Lookup = source1WithIndex.ToLookup(x => x.key);
             var source2Lookup = source2WithIndex.ToLookup(x => x.key);
 
@@ -165,7 +220,16 @@ namespace Newtonsoft.Json.Comparer
                    select new JoinResultWithKey<T, TKey> { Key = key, Value1 = source1Value?.value, Value2 = source2Value?.value };
         }
 
-        public IEnumerable<JoinResultWithKey<T, string>> OuterJoinStringifyKey<T, TKey>(IEnumerable<T> source1, IEnumerable<T> source2, Func<T, int, TKey> keySelector)
+        /// <summary>
+        /// Outer join with a string key resulting from a ToString call on the key.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="source1"></param>
+        /// <param name="source2"></param>
+        /// <param name="keySelector"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<JoinResultWithKey<T, string>> OuterJoinStringifyKey<T, TKey>(IEnumerable<T> source1, IEnumerable<T> source2, Func<T, int, TKey> keySelector)
     where T : class
         {
             return OuterJoin(source1, source2, keySelector)

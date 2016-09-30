@@ -17,7 +17,7 @@ namespace Newtonsoft.Json.Comparer.Tests
             var compareResult = (JObjectComparrisonResult)new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
 
             compareResult.ComparrisonResult.Should().Be(ComparisonResult.Different, because: "The JObjects are created from different type");
-            compareResult.PropertyComparrison.First(x => x.Key == "ExtraIntProperty").ComparrisonResult.Should().Be(ComparisonResult.MissingInSource2);
+            compareResult.PropertyComparrisons.First(x => x.Key == "ExtraIntProperty").ComparrisonResult.Should().Be(ComparisonResult.MissingInSource2);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace Newtonsoft.Json.Comparer.Tests
             var compareResult = (JObjectComparrisonResult)new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
 
             compareResult.ComparrisonResult.Should().Be(ComparisonResult.Different, because: "The JObjects are created from different type");
-            compareResult.PropertyComparrison.First(x => x.Key == "ExtraIntProperty").ComparrisonResult.Should().Be(ComparisonResult.MissingInSource1);
+            compareResult.PropertyComparrisons.First(x => x.Key == "ExtraIntProperty").ComparrisonResult.Should().Be(ComparisonResult.MissingInSource1);
         }
     }
 }
