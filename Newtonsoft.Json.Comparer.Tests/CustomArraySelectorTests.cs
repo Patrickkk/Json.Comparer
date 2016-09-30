@@ -30,7 +30,17 @@ namespace Newtonsoft.Json.Comparer.Tests
         [Fact]
         public void WhenArraySelectorResultsInDuplicateKeysItShouldThrowAnException()
         {
-            throw new NotImplementedException();
+            var child1 = new ComplexObject(false) { Id = "SomeId1" };
+            var child2 = new ComplexObject(false) { Id = "SomeId1" };
+            var child3 = new ComplexObject(false) { Id = "SomeId1" };
+
+            var parent1 = new ComplexObject(false) { Children = new List<ComplexObject> { child1, child2, child3 } };
+            var parent2 = new ComplexObject(false) { Children = new List<ComplexObject> { child3, child2, child1 } };
+
+            var jobject = JToken.FromObject(parent1);
+            var jobject2 = JToken.FromObject(parent2);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => (JObjectComparrisonResult)new JTokenComparer(new CustomArrayKeySelector()).CompareTokens("root", jobject, jobject2));
         }
     }
 }

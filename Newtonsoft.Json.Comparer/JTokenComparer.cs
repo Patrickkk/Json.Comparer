@@ -14,6 +14,13 @@ namespace Newtonsoft.Json.Comparer
             this.arrayKeySelector = arrayKeySelector;
         }
 
+        public virtual JTokenComparrisonResult Compare(object object1, object object2)
+        {
+            var Jobject1 = JToken.FromObject(object1);
+            var Jobject2 = JToken.FromObject(object2);
+            return CompareTokens("root", Jobject1, Jobject2);
+        }
+
         /// <summary>
         /// Compares the given tokens
         /// </summary>
@@ -208,7 +215,7 @@ namespace Newtonsoft.Json.Comparer
 
             if (duplicateKeys.Any())
             {
-                throw new Exception($"duplicate keys when joining found. The following duplicate keys were found {string.Join(",", duplicateKeys)}.");
+                throw new ArgumentOutOfRangeException($"duplicate keys when joining found. The following duplicate keys were found {string.Join(",", duplicateKeys)}. cannot join with duplicate keys.");
             }
 
             var source1Lookup = source1WithIndex.ToLookup(x => x.key);

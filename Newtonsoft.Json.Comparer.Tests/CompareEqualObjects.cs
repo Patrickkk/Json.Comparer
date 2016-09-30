@@ -14,7 +14,7 @@ namespace Newtonsoft.Json.Comparer.Tests
             var jobject = JToken.FromObject(simpleObject);
             var jobject2 = JToken.FromObject(simpleObject);
 
-            var compareResult = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
+            var compareResult = new JTokenComparer(new IndexArrayKeySelector()).CompareObjects(simpleObject, simpleObject);
 
             compareResult.ComparrisonResult.Should().Be(ComparisonResult.Identical, because: "The JObjects are created from the same CLR object instance");
         }
