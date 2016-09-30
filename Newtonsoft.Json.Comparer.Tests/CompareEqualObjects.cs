@@ -14,7 +14,7 @@ namespace Newtonsoft.Json.Comparer.Tests
             var jobject = JToken.FromObject(simpleObject);
             var jobject2 = JToken.FromObject(simpleObject);
 
-            var compareResult = new JTokenComparer(new IndexArrayKeySelector()).CompareObjects(simpleObject, simpleObject);
+            var compareResult = new JTokenComparer(new IndexArrayKeySelector()).Compare(simpleObject, simpleObject);
 
             compareResult.ComparrisonResult.Should().Be(ComparisonResult.Identical, because: "The JObjects are created from the same CLR object instance");
         }
@@ -28,10 +28,7 @@ namespace Newtonsoft.Json.Comparer.Tests
                 new SimpleObject(),
             };
 
-            var jobject = JToken.FromObject(array);
-            var jobject2 = JToken.FromObject(array);
-
-            var compareResult = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
+            var compareResult = new JTokenComparer(new IndexArrayKeySelector()).Compare(array, array);
 
             compareResult.ComparrisonResult.Should().Be(ComparisonResult.Identical, because: "The JObjects are created from the same CLR object instance");
         }
@@ -40,10 +37,7 @@ namespace Newtonsoft.Json.Comparer.Tests
         public void Comparrison2EqualComplextObjectsShouldHaveNoDifference()
         {
             var complexObject = new ComplexObject(true);
-            var jobject = JToken.FromObject(complexObject);
-            var jobject2 = JToken.FromObject(complexObject);
-
-            var compareResult = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
+            var compareResult = new JTokenComparer(new IndexArrayKeySelector()).Compare(complexObject, complexObject);
 
             compareResult.ComparrisonResult.Should().Be(ComparisonResult.Identical, because: "The JObjects are created from the same CLR object instance");
         }
