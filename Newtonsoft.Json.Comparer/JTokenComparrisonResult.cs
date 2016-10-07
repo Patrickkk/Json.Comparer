@@ -7,6 +7,8 @@
     {
         public string Key { get; set; }
 
+        public string Path { get; set; }
+
         /// <summary>
         /// The type of JToken compared
         /// </summary>

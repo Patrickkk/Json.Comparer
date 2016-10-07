@@ -95,6 +95,7 @@ namespace Newtonsoft.Json.Comparer
             return new JValueComparrisonResult
             {
                 Key = key,
+                Path = token1.Path,
                 Source1Value = token1.Value?.ToString(),
                 Source2Value = token2.Value?.ToString(),
                 ComparrisonResult = token1.Value?.ToString() == token2.Value?.ToString() ? ComparisonResult.Identical : ComparisonResult.Different
@@ -119,6 +120,7 @@ namespace Newtonsoft.Json.Comparer
             return new JArrayComparrisonResult
             {
                 Key = key,
+                Path = token1.Path,
                 ComparrisonResult = ComparrisonResultFromCollection(arrayContentComparrisonResult),
                 ArrayElementComparrisons = arrayContentComparrisonResult
             };
@@ -141,6 +143,7 @@ namespace Newtonsoft.Json.Comparer
             return new JObjectComparrisonResult
             {
                 Key = key,
+                Path = object1.Path,
                 PropertyComparrisons = propertyComparrison,
                 ComparrisonResult = ComparrisonResultFromCollection(propertyComparrison)
             };
@@ -185,6 +188,7 @@ namespace Newtonsoft.Json.Comparer
             return new JPropertyComparrisonResult
             {
                 Key = key,
+                Path = property1.Path,
                 ComparrisonResult = comparrisonResult.ComparrisonResult,
                 PropertyValueComparissonResult = comparrisonResult
             };
