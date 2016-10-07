@@ -9,6 +9,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json.Comparer.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json.Comparer.TextResultReporter", "Newtonsoft.Json.Comparer.TextResultReporter\Newtonsoft.Json.Comparer.TextResultReporter.csproj", "{2202605A-DA9F-4041-9B6D-05855CDAD0BE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{E6639411-F62E-4B57-BC90-C6927A9A5A78}"
+	ProjectSection(SolutionItems) = preProject
+		Nuget\Build.bat = Nuget\Build.bat
+		Nuget\Newtonsoft.Json.Comparer.nuspec = Nuget\Newtonsoft.Json.Comparer.nuspec
+		Nuget\NuGet.Config = Nuget\NuGet.Config
+		Nuget\NuGet.exe = Nuget\NuGet.exe
+		Nuget\PackageAll.bat = Nuget\PackageAll.bat
+		Nuget\PackageAllLocal.bat = Nuget\PackageAllLocal.bat
+		Nuget\PackageFunctionalSharp.PatternMatching.DiscriminatedUnions.bat = Nuget\PackageFunctionalSharp.PatternMatching.DiscriminatedUnions.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
