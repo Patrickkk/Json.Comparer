@@ -89,8 +89,8 @@ namespace Newtonsoft.Json.Comparer
         /// <returns></returns>
         public virtual JValueComparrisonResult CompareValue(string key, JValue token1, JValue token2)
         {
-            if (token1 == null) { return new JValueComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource1, Source1Value = null, Source2Value = token2.Value?.ToString() }; }
-            if (token2 == null) { return new JValueComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource2, Source1Value = token1.Value?.ToString(), Source2Value = null }; }
+            if (token1 == null) { return new JValueComparrisonResult { Key = key, Path = token2.Path, ComparrisonResult = ComparisonResult.MissingInSource1, Source1Value = null, Source2Value = token2.Value?.ToString() }; }
+            if (token2 == null) { return new JValueComparrisonResult { Key = key, Path = token1.Path, ComparrisonResult = ComparisonResult.MissingInSource2, Source1Value = token1.Value?.ToString(), Source2Value = null }; }
 
             return new JValueComparrisonResult
             {
@@ -111,8 +111,8 @@ namespace Newtonsoft.Json.Comparer
         /// <returns></returns>
         public virtual JArrayComparrisonResult CompareArrays(string key, JArray token1, JArray token2)
         {
-            if (token1 == null) { return new JArrayComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
-            if (token2 == null) { return new JArrayComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
+            if (token1 == null) { return new JArrayComparrisonResult { Key = key, Path = token2.Path, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
+            if (token2 == null) { return new JArrayComparrisonResult { Key = key, Path = token1.Path, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
 
             var arrayContentComparrisonResult = OuterJoinStringifyKey(token1.Children(), token2.Children(), arrayKeySelector.SelectArrayKey)
                 .Select(CompareTokens);
@@ -135,8 +135,8 @@ namespace Newtonsoft.Json.Comparer
         /// <returns></returns>
         public virtual JTokenComparrisonResult CompareObjects(string key, JObject object1, JObject object2)
         {
-            if (object1 == null) { return new JObjectComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
-            if (object2 == null) { return new JObjectComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
+            if (object1 == null) { return new JObjectComparrisonResult { Key = key, Path = object2.Path, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
+            if (object2 == null) { return new JObjectComparrisonResult { Key = key, Path = object1.Path, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
 
             var propertyComparrison = OuterJoin(object1.Children<JProperty>(), object2.Children<JProperty>(), (x, y) => x.Name)
                                           .Select(CompareProperty).ToList();
@@ -180,8 +180,8 @@ namespace Newtonsoft.Json.Comparer
         /// <returns></returns>
         public virtual JPropertyComparrisonResult CompareProperty(string key, JProperty property1, JProperty property2)
         {
-            if (property1 == null) { return new JPropertyComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
-            if (property2 == null) { return new JPropertyComparrisonResult { Key = key, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
+            if (property1 == null) { return new JPropertyComparrisonResult { Key = key, Path = property2.Path, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
+            if (property2 == null) { return new JPropertyComparrisonResult { Key = key, Path = property1.Path, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
 
             var comparrisonResult = CompareTokens(key, property1.Value, property2.Value);
 

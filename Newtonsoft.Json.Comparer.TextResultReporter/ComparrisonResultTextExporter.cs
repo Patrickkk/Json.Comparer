@@ -6,20 +6,20 @@ namespace Newtonsoft.Json.Comparer.TextResultReporter
 {
     public class ComparrisonResultTextExporter
     {
-        public static string Report(JTokenComparrisonResult comparrisonResult, IEnumerable<ComparisonResult> resultsToReport, int indent = 0)
+        public static string Report(JTokenComparrisonResult comparrisonResult, IEnumerable<ComparisonResult> resultsToReport)
         {
             return comparrisonResult.Match(
-                x => ReportObject(x, resultsToReport, indent),
-                x => ReportArray(x, resultsToReport, indent),
-                x => ReportProperty(x, resultsToReport, indent),
-                x => ReportValue(x, resultsToReport, indent));
+                x => ReportObject(x, resultsToReport),
+                x => ReportArray(x, resultsToReport),
+                x => ReportProperty(x, resultsToReport),
+                x => ReportValue(x, resultsToReport));
         }
 
-        private static string ReportValue(JValueComparrisonResult valueComparrison, IEnumerable<ComparisonResult> resultsToReport, int indent = 0)
+        private static string ReportValue(JValueComparrisonResult valueComparrison, IEnumerable<ComparisonResult> resultsToReport)
         {
             if (resultsToReport.Contains(valueComparrison.ComparrisonResult))
             {
-                return WithIndent($"{valueComparrison.ComparrisonResult} - source1Value '{valueComparrison.Source1Value?.ToString()}' - source2Value '{valueComparrison.Source2Value?.ToString()}'", indent);
+                return $"-source1Value '{valueComparrison.Source1Value?.ToString()}' - source2Value '{valueComparrison.Source2Value?.ToString()}'";
             }
             else
             {
@@ -27,30 +27,32 @@ namespace Newtonsoft.Json.Comparer.TextResultReporter
             }
         }
 
-        private static string ReportProperty(JPropertyComparrisonResult propertyComparrison, IEnumerable<ComparisonResult> resultsToReport, int indent = 0)
+        private static string ReportProperty(JPropertyComparrisonResult propertyComparrison, IEnumerable<ComparisonResult> resultsToReport)
         {
             if (propertyComparrison.PropertyValueComparissonResult.Type == ComparedTokenType.Value)
             {
-                return WithIndent($"{propertyComparrison.Key} - {ReportValue((JValueComparrisonResult)propertyComparrison.PropertyValueComparissonResult, resultsToReport)}", indent);
+                return ReportElement(propertyComparrison)
+                    + ReportValue((JValueComparrisonResult)propertyComparrison.PropertyValueComparissonResult, resultsToReport);
             }
             else
             {
-                return WithIndent($"{propertyComparrison.Key} - {propertyComparrison.ComparrisonResult} - {propertyComparrison.PropertyValueComparissonResult.Type}", indent) + Environment.NewLine
-                    + Report(propertyComparrison.PropertyValueComparissonResult, resultsToReport, indent + 1);
+                return ReportElement(propertyComparrison) 
+                    + Environment.NewLine
+                    + Report(propertyComparrison.PropertyValueComparissonResult, resultsToReport);
             }
         }
 
-        private static string ReportArray(JArrayComparrisonResult arrayComparrison, IEnumerable<ComparisonResult> resultsToReport, int indent = 0)
+        private static string ReportArray(JArrayComparrisonResult arrayComparrison, IEnumerable<ComparisonResult> resultsToReport)
         {
             if (resultsToReport.Contains(arrayComparrison.ComparrisonResult))
             {
                 if (arrayComparrison.ComparrisonResult == ComparisonResult.MissingInSource1 || arrayComparrison.ComparrisonResult == ComparisonResult.MissingInSource2)
                 {
-                    return WithIndent($"{arrayComparrison.Key} - {arrayComparrison.ComparrisonResult} - array", indent);
+                    return ReportElement(arrayComparrison);
                 }
                 var elementsToReport = arrayComparrison.ArrayElementComparrisons.Where(comparrison => resultsToReport.Contains(comparrison.ComparrisonResult));
 
-                return string.Join(Environment.NewLine, elementsToReport.Select(x => Report(x, resultsToReport, indent)).Where(x => !string.IsNullOrEmpty(x)));
+                return string.Join(Environment.NewLine, elementsToReport.Select(x => Report(x, resultsToReport)).Where(x => !string.IsNullOrEmpty(x)));
             }
             else
             {
@@ -58,19 +60,20 @@ namespace Newtonsoft.Json.Comparer.TextResultReporter
             }
         }
 
-        private static string ReportObject(JObjectComparrisonResult objectcomparrison, IEnumerable<ComparisonResult> resultsToReport, int indent = 0)
+        private static string ReportObject(JObjectComparrisonResult objectcomparrison, IEnumerable<ComparisonResult> resultsToReport)
         {
             if (resultsToReport.Contains(objectcomparrison.ComparrisonResult))
             {
                 if (objectcomparrison.ComparrisonResult == ComparisonResult.MissingInSource1 || objectcomparrison.ComparrisonResult == ComparisonResult.MissingInSource2)
                 {
-                    return WithIndent($"{objectcomparrison.Key} - {objectcomparrison.ComparrisonResult} - object ", indent);
+                    return ReportElement(objectcomparrison);
                 }
 
                 var propertiesToReport = objectcomparrison.PropertyComparrisons.Where(propertyComparrison => resultsToReport.Contains(propertyComparrison.ComparrisonResult));
 
-                return WithIndent($"{objectcomparrison.Key} - {objectcomparrison.ComparrisonResult} - object", indent) + Environment.NewLine
-                    + string.Join(Environment.NewLine, propertiesToReport.Select(x => Report(x, resultsToReport, indent + 1)).Where(x => !string.IsNullOrEmpty(x)));
+                return ReportElement(objectcomparrison)
+                    + Environment.NewLine
+                    + string.Join(Environment.NewLine, propertiesToReport.Select(x => Report(x, resultsToReport)).Where(x => !string.IsNullOrEmpty(x)));
             }
             else
             {
@@ -78,9 +81,9 @@ namespace Newtonsoft.Json.Comparer.TextResultReporter
             }
         }
 
-        private static string WithIndent(string text, int indent = 0)
+        private static string ReportElement(JTokenComparrisonResult result)
         {
-            return "".PadLeft(indent, '-') + " " + text;
+            return $"{result.Path}-key:{result.Key}-{result.ComparrisonResult.ToString()}-{result.Type}";
         }
     }
 }
