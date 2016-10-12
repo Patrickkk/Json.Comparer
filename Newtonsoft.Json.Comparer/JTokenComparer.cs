@@ -40,7 +40,7 @@ namespace Newtonsoft.Json.Comparer
 
             var type = token1 == null ? token2.Type : token1.Type;
 
-            switch (token1.Type)
+            switch (type)
             {
                 case JTokenType.None:
                     throw new NotImplementedException();
