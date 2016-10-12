@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Newtonsoft.Json.Comparer
 {
@@ -37,6 +37,8 @@ namespace Newtonsoft.Json.Comparer
                     throw new NotImplementedException("token1.Type != token2.Type");
                 }
             }
+
+            var type = token1 == null ? token2.Type : token1.Type;
 
             switch (token1.Type)
             {
