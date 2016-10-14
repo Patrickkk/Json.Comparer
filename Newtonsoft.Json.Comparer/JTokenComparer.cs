@@ -8,10 +8,20 @@ namespace Newtonsoft.Json.Comparer
     public class JTokenComparer
     {
         private readonly IArrayKeySelector arrayKeySelector;
+        private readonly IEnumerable<IComparrisonFilter> filters;
 
-        public JTokenComparer(IArrayKeySelector arrayKeySelector)
+        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters)
         {
+            this.filters = filters;
             this.arrayKeySelector = arrayKeySelector;
+        }
+
+        public JTokenComparer(IArrayKeySelector arrayKeySelector, IComparrisonFilter filter) : this(arrayKeySelector, new IComparrisonFilter[] { filter })
+        {
+        }
+
+        public JTokenComparer(IArrayKeySelector arrayKeySelector) : this(arrayKeySelector, Enumerable.Empty<IComparrisonFilter>())
+        {
         }
 
         public virtual JTokenComparrisonResult Compare(object object1, object object2)
@@ -30,14 +40,6 @@ namespace Newtonsoft.Json.Comparer
         /// <returns></returns>
         public virtual JTokenComparrisonResult CompareTokens(string key, JToken token1, JToken token2)
         {
-            if (token1 != null && token2 != null)
-            {
-                if (token1.Type != token2.Type)
-                {
-                    throw new NotImplementedException("token1.Type != token2.Type");
-                }
-            }
-
             var type = token1 == null ? token2.Type : token1.Type;
 
             switch (type)
@@ -91,6 +93,16 @@ namespace Newtonsoft.Json.Comparer
         /// <returns></returns>
         public virtual JValueComparrisonResult CompareValue(string key, JValue token1, JValue token2)
         {
+            if (ShouldBeFiltered(key, token1, token2))
+            {
+                return new JValueComparrisonResult
+                {
+                    Key = key,
+                    Path = FirstNonNullValueOrDefault("", token1?.Path, token2?.Path),
+                    Source1Value = token1.Value?.ToString().EmptyIfNull(),
+                    Source2Value = token2.Value?.ToString().EmptyIfNull(),
+                };
+            }
             if (token1 == null) { return new JValueComparrisonResult { Key = key, Path = token2.Path, ComparrisonResult = ComparisonResult.MissingInSource1, Source1Value = null, Source2Value = token2.Value?.ToString() }; }
             if (token2 == null) { return new JValueComparrisonResult { Key = key, Path = token1.Path, ComparrisonResult = ComparisonResult.MissingInSource2, Source1Value = token1.Value?.ToString(), Source2Value = null }; }
 
@@ -113,8 +125,10 @@ namespace Newtonsoft.Json.Comparer
         /// <returns></returns>
         public virtual JArrayComparrisonResult CompareArrays(string key, JArray token1, JArray token2)
         {
-            if (token1 == null) { return new JArrayComparrisonResult { Key = key, Path = token2.Path, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
-            if (token2 == null) { return new JArrayComparrisonResult { Key = key, Path = token1.Path, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
+            if (MissingOrFiltered(key, token1, token2))
+            {
+                return MissingOrFilteredResult<JArrayComparrisonResult>(key, token1, token2);
+            }
 
             var arrayContentComparrisonResult = OuterJoinStringifyKey(token1.Children(), token2.Children(), arrayKeySelector.SelectArrayKey)
                 .Select(CompareTokens);
@@ -135,10 +149,12 @@ namespace Newtonsoft.Json.Comparer
         /// <param name="object1"></param>
         /// <param name="object2"></param>
         /// <returns></returns>
-        public virtual JTokenComparrisonResult CompareObjects(string key, JObject object1, JObject object2)
+        public virtual JObjectComparrisonResult CompareObjects(string key, JObject object1, JObject object2)
         {
-            if (object1 == null) { return new JObjectComparrisonResult { Key = key, Path = object2.Path, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
-            if (object2 == null) { return new JObjectComparrisonResult { Key = key, Path = object1.Path, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
+            if (MissingOrFiltered(key, object1, object2))
+            {
+                return MissingOrFilteredResult<JObjectComparrisonResult>(key, object1, object2);
+            }
 
             var propertyComparrison = OuterJoin(object1.Children<JProperty>(), object2.Children<JProperty>(), (x, y) => x.Name)
                                           .Select(CompareProperty).ToList();
@@ -182,8 +198,10 @@ namespace Newtonsoft.Json.Comparer
         /// <returns></returns>
         public virtual JPropertyComparrisonResult CompareProperty(string key, JProperty property1, JProperty property2)
         {
-            if (property1 == null) { return new JPropertyComparrisonResult { Key = key, Path = property2.Path, ComparrisonResult = ComparisonResult.MissingInSource1 }; }
-            if (property2 == null) { return new JPropertyComparrisonResult { Key = key, Path = property1.Path, ComparrisonResult = ComparisonResult.MissingInSource2 }; }
+            if (MissingOrFiltered(key, property1, property2))
+            {
+                return MissingOrFilteredResult<JPropertyComparrisonResult>(key, property1, property2);
+            }
 
             var comparrisonResult = CompareTokens(key, property1.Value, property2.Value);
 
@@ -247,6 +265,61 @@ namespace Newtonsoft.Json.Comparer
         {
             return OuterJoin(source1, source2, keySelector)
                 .Select(x => new JoinResultWithKey<T, string> { Key = x.Key.ToString(), Value1 = x.Value1, Value2 = x.Value2 });
+        }
+
+        private bool MissingOrFiltered(string key, JToken token1, JToken token2)
+        {
+            return MissingToken(token1, token2) ||
+                ShouldBeFiltered(key, token1, token2);
+        }
+
+        private TComparrison MissingOrFilteredResult<TComparrison>(string key, JToken token1, JToken token2)
+    where TComparrison : JTokenComparrisonResult, new()
+        {
+            var result = Activator.CreateInstance<TComparrison>();
+            result.ComparrisonResult = MissingOrFilteredComparrisonResult(key, token1, token2);
+            result.Path = FirstNonNullValue(token1?.Path, token2?.Path);
+            result.Key = key;
+            return result;
+        }
+
+        private ComparisonResult MissingOrFilteredComparrisonResult(string key, JToken token1, JToken token2)
+        {
+            if (ShouldBeFiltered(key, token1, token2)) { return ComparisonResult.Filtered; }
+            if (token1 == null) { return ComparisonResult.MissingInSource1; }
+            if (token2 == null) { return ComparisonResult.MissingInSource2; }
+            throw new Exception("This shouldn't happen.");
+        }
+
+        private static bool MissingToken(JToken token1, JToken token2)
+        {
+            return token1 == null
+                || token2 == null;
+        }
+
+        private bool ShouldBeFiltered(string key, JToken token1, JToken token2)
+        {
+            return filters.Any(filter => filter.ShouldBeFiltered(key, token1, token2));
+        }
+
+        private static T FirstNonNullValue<T>(params T[] values)
+            where T : class
+        {
+            return values.First(x => x != null);
+        }
+
+        private static T FirstNonNullValueOrDefault<T>(T defaultValue, params T[] values)
+            where T : class
+        {
+            var value = values.FirstOrDefault(x => x != null);
+            if (value == null)
+            {
+                return defaultValue;
+            }
+            else
+            {
+                return value;
+            }
         }
     }
 }

@@ -28,6 +28,11 @@
         /// <summary>
         /// The element is of a different type in source and target. This indicates there is an incorrect comparrison.
         /// </summary>
-        DifferentTypes
+        DifferentTypes,
+
+        /// <summary>
+        /// The tokens comparrison was skipped and filtered out.
+        /// </summary>
+        Filtered,
     }
 }

@@ -11,9 +11,6 @@ namespace Newtonsoft.Json.Comparer.Tests
         public void Compare2EqualObjectsShouldNotHaveDifference()
         {
             var simpleObject = new SimpleObject();
-            var jobject = JToken.FromObject(simpleObject);
-            var jobject2 = JToken.FromObject(simpleObject);
-
             var compareResult = new JTokenComparer(new IndexArrayKeySelector()).Compare(simpleObject, simpleObject);
 
             compareResult.ComparrisonResult.Should().Be(ComparisonResult.Identical, because: "The JObjects are created from the same CLR object instance");

@@ -76,7 +76,10 @@
     <Compile Include="ComplexObjectDifferenceTests.cs" />
     <Compile Include="CustomArrayKeySelector.cs" />
     <Compile Include="CustomArraySelectorTests.cs" />
+    <Compile Include="Filters\FilterAll.cs" />
+    <Compile Include="Filters\FilterPropertyByNameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestComparrisonFilters.cs" />
     <Compile Include="TestMissingProperties.cs" />
     <Compile Include="TestObjects\ComplexObject.cs" />
     <Compile Include="TestObjects\SimpleObject.cs" />
