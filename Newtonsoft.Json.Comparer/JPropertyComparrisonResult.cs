@@ -1,4 +1,6 @@
-﻿namespace Newtonsoft.Json.Comparer
+﻿using NullGuard;
+
+namespace Newtonsoft.Json.Comparer
 {
     /// <summary>
     /// The result of a JToken comparison.
@@ -18,6 +20,7 @@
         /// <summary>
         /// The comparrisonresult of the value of the property.
         /// </summary>
+        [AllowNull]
         public JTokenComparrisonResult PropertyValueComparissonResult { get; set; }
     }
 }

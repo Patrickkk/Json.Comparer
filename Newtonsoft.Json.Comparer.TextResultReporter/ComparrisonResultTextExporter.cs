@@ -8,11 +8,18 @@ namespace Newtonsoft.Json.Comparer.TextResultReporter
     {
         public static string Report(JTokenComparrisonResult comparrisonResult, IEnumerable<ComparisonResult> resultsToReport)
         {
-            return comparrisonResult.Match(
-                x => ReportObject(x, resultsToReport),
-                x => ReportArray(x, resultsToReport),
-                x => ReportProperty(x, resultsToReport),
-                x => ReportValue(x, resultsToReport));
+            if (comparrisonResult != null)
+            {
+                return comparrisonResult.Match(
+                    x => ReportObject(x, resultsToReport),
+                    x => ReportArray(x, resultsToReport),
+                    x => ReportProperty(x, resultsToReport),
+                    x => ReportValue(x, resultsToReport));
+            }
+            else
+            {
+                return "";
+            }
         }
 
         private static string ReportValue(JValueComparrisonResult valueComparrison, IEnumerable<ComparisonResult> resultsToReport)
@@ -29,14 +36,14 @@ namespace Newtonsoft.Json.Comparer.TextResultReporter
 
         private static string ReportProperty(JPropertyComparrisonResult propertyComparrison, IEnumerable<ComparisonResult> resultsToReport)
         {
-            if (propertyComparrison.PropertyValueComparissonResult.Type == ComparedTokenType.Value)
+            if (propertyComparrison.PropertyValueComparissonResult?.Type == ComparedTokenType.Value)
             {
                 return ReportElement(propertyComparrison)
                     + ReportValue((JValueComparrisonResult)propertyComparrison.PropertyValueComparissonResult, resultsToReport);
             }
             else
             {
-                return ReportElement(propertyComparrison) 
+                return ReportElement(propertyComparrison)
                     + Environment.NewLine
                     + Report(propertyComparrison.PropertyValueComparissonResult, resultsToReport);
             }

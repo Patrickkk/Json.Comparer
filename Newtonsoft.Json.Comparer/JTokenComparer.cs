@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using NullGuard;
 
 namespace Newtonsoft.Json.Comparer
 {
@@ -38,7 +39,7 @@ namespace Newtonsoft.Json.Comparer
         /// <param name="token1"></param>
         /// <param name="token2"></param>
         /// <returns></returns>
-        public virtual JTokenComparrisonResult CompareTokens(string key, JToken token1, JToken token2)
+        public virtual JTokenComparrisonResult CompareTokens(string key, [AllowNull]JToken token1, [AllowNull]JToken token2)
         {
             var type = token1 == null ? token2.Type : token1.Type;
 
@@ -91,7 +92,7 @@ namespace Newtonsoft.Json.Comparer
         /// <param name="token1"></param>
         /// <param name="token2"></param>
         /// <returns></returns>
-        public virtual JValueComparrisonResult CompareValue(string key, JValue token1, JValue token2)
+        public virtual JValueComparrisonResult CompareValue(string key, [AllowNull]JValue token1, [AllowNull]JValue token2)
         {
             if (ShouldBeFiltered(key, token1, token2))
             {
@@ -123,7 +124,7 @@ namespace Newtonsoft.Json.Comparer
         /// <param name="token1"></param>
         /// <param name="token2"></param>
         /// <returns></returns>
-        public virtual JArrayComparrisonResult CompareArrays(string key, JArray token1, JArray token2)
+        public virtual JArrayComparrisonResult CompareArrays(string key, [AllowNull]JArray token1, [AllowNull]JArray token2)
         {
             if (MissingOrFiltered(key, token1, token2))
             {
@@ -149,7 +150,7 @@ namespace Newtonsoft.Json.Comparer
         /// <param name="object1"></param>
         /// <param name="object2"></param>
         /// <returns></returns>
-        public virtual JObjectComparrisonResult CompareObjects(string key, JObject object1, JObject object2)
+        public virtual JObjectComparrisonResult CompareObjects(string key, [AllowNull]JObject object1, [AllowNull]JObject object2)
         {
             if (MissingOrFiltered(key, object1, object2))
             {
@@ -196,11 +197,12 @@ namespace Newtonsoft.Json.Comparer
         /// <param name="property1"></param>
         /// <param name="property2"></param>
         /// <returns></returns>
-        public virtual JPropertyComparrisonResult CompareProperty(string key, JProperty property1, JProperty property2)
+        public virtual JPropertyComparrisonResult CompareProperty(string key, [AllowNull]JProperty property1, [AllowNull]JProperty property2)
         {
             if (MissingOrFiltered(key, property1, property2))
             {
-                return MissingOrFilteredResult<JPropertyComparrisonResult>(key, property1, property2);
+                return MissingOrFilteredResult<JPropertyComparrisonResult>(key, property1, property2)
+                    .With(x => x.Name = FirstNonNullValueOrDefault(property1?.Name, property2?.Name));
             }
 
             var comparrisonResult = CompareTokens(key, property1.Value, property2.Value);
@@ -209,6 +211,7 @@ namespace Newtonsoft.Json.Comparer
             {
                 Key = key,
                 Path = property1.Path,
+                Name = property1.Name,
                 ComparrisonResult = comparrisonResult.ComparrisonResult,
                 PropertyValueComparissonResult = comparrisonResult
             };
@@ -297,7 +300,7 @@ namespace Newtonsoft.Json.Comparer
                 || token2 == null;
         }
 
-        private bool ShouldBeFiltered(string key, JToken token1, JToken token2)
+        private bool ShouldBeFiltered(string key, [AllowNull]JToken token1, [AllowNull]JToken token2)
         {
             return filters.Any(filter => filter.ShouldBeFiltered(key, token1, token2));
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Newtonsoft.Json.Comparer
 {
-    public static class StringExtensions
+    public static class Extensions
     {
         public static string EmptyIfNull(this string value)
         {
@@ -18,6 +18,12 @@ namespace Newtonsoft.Json.Comparer
             {
                 return value;
             }
+        }
+
+        public static T With<T>(this T value, Action<T> action)
+        {
+            action(value);
+            return value;
         }
     }
 }

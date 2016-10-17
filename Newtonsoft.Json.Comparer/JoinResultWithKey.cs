@@ -1,4 +1,6 @@
-﻿namespace Newtonsoft.Json.Comparer
+﻿using NullGuard;
+
+namespace Newtonsoft.Json.Comparer
 {
     /// <summary>
     /// The reult of a outter join of 2 elements based on a given key.
@@ -9,8 +11,10 @@
     {
         public TKey Key { get; set; }
 
+        [AllowNull]
         public T Value1 { get; set; }
 
+        [AllowNull]
         public T Value2 { get; set; }
     }
 }
