@@ -175,7 +175,7 @@ namespace Newtonsoft.Json.Comparer
         /// <returns></returns>
         public virtual ComparisonResult ComparrisonResultFromCollection(IEnumerable<JTokenComparrisonResult> collection)
         {
-            if (collection.Any(x => x.ComparrisonResult != ComparisonResult.Identical))
+            if (collection.Any(x => x.ComparrisonResult != ComparisonResult.Identical && x.ComparrisonResult != ComparisonResult.Filtered))
             {
                 return ComparisonResult.Different;
             }

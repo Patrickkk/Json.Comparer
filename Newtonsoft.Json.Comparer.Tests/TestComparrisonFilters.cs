@@ -33,7 +33,7 @@ namespace Newtonsoft.Json.Comparer.Tests
 
             var compareResult = new JTokenComparer(new IndexArrayKeySelector(), new FilterPropertyByName("IntProperty")).CompareObjects("root", jobject1, jobject2);
 
-            compareResult.ComparrisonResult.Should().Be(ComparisonResult.Different, because: "not everything should be filtered.");
+            compareResult.ComparrisonResult.Should().Be(ComparisonResult.Identical, because: "Every different property is filtered.");
             compareResult.PropertyComparrisons
                 .Count(x => x.ComparrisonResult == ComparisonResult.Different)
                 .Should().Be(0, because: "There is 1 different propertybut it is filtered.");
