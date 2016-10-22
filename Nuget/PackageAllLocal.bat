@@ -5,5 +5,5 @@ nuget.exe update -self
 CALL Build.bat
 
 mkdir Publish
-NuGet Pack Newtonsoft.Json.Comparer -OutputDirectory "D:\Nuget"
+NuGet Pack Json.Comparer -OutputDirectory "D:\Nuget"
 pause

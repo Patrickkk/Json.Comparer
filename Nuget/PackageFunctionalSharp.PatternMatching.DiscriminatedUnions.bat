@@ -5,7 +5,7 @@ nuget.exe update -self
 CALL Build.bat
 
 mkdir Publish
-NuGet Pack Newtonsoft.Json.Comparer.nuspec -OutputDirectory Publish
-Nuget push "\Publish\Newtonsoft.Json.Comparer*.nupkg"
+NuGet Pack Json.Comparer.nuspec -OutputDirectory Publish
+Nuget push "\Publish\Json.Comparer*.nupkg"
 rmdir Publish /s /q
 pause

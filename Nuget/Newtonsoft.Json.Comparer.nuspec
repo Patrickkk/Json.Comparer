@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Newtonsoft.Json.Comparer</id>
+    <id>Json.Comparer</id>
     <version>0.1.0</version>
     <title>FunctionalSharp PatternMatching</title>
     <authors>Patrick van Lohuizen</authors>
     <owners>Patrick van Lohuizen</owners>
-    <licenseUrl>https://github.com/Patrickkk/Newtonsoft.Json.Comparer/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/Patrickkk/Newtonsoft.Json.Comparer/</projectUrl>
+    <licenseUrl>https://github.com/Patrickkk/Json.Comparer/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Patrickkk/Json.Comparer/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description></description>
     <summary></summary>
@@ -18,6 +18,6 @@
     <tags></tags>
   </metadata>
   <files>
-    <file src="..\Newtonsoft.Json.Comparer\bin\Release\FunctionalSharp.PatternMatching.dll" target="lib\net451\FunctionalSharp.PatternMatching.dll" />
+    <file src="..\Json.Comparer\bin\Release\FunctionalSharp.PatternMatching.dll" target="lib\net451\FunctionalSharp.PatternMatching.dll" />
   </files>
 </package>

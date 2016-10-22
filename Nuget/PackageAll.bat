@@ -2,4 +2,4 @@ mode con:cols=140 lines=2500
 
 nuget.exe update -self
 
-CALL Newtonsoft.Json.Comparer
+CALL Json.Comparer
