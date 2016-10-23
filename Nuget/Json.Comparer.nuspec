@@ -3,21 +3,23 @@
   <metadata>
     <id>Json.Comparer</id>
     <version>0.1.0</version>
-    <title>FunctionalSharp PatternMatching</title>
+    <title>Json.Comparer</title>
     <authors>Patrick van Lohuizen</authors>
     <owners>Patrick van Lohuizen</owners>
     <licenseUrl>https://github.com/Patrickkk/Json.Comparer/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/Patrickkk/Json.Comparer/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description></description>
-    <summary></summary>
+    <description>Deep compares 2 objects or jtokens/jarrays/jobjects and returns the the result of the comparrison per element/property. allowing for reporting of difference between all kinds of objects.</description>
+    <summary>Deep compares 2 objects or JTokens and returns the the result of the comparrison per element/property. allowing for reporting of difference between all kinds of objects.</summary>
     <releaseNotes>
+      - initial release.
+      - deep compare objects
     </releaseNotes>
     <copyright>Patrick van Lohuizen</copyright>
     <language>en-US</language>
-    <tags></tags>
+    <tags>json,compare,comparer,newtonsoft.json,.net,</tags>
   </metadata>
   <files>
-    <file src="..\Json.Comparer\bin\Release\FunctionalSharp.PatternMatching.dll" target="lib\net451\FunctionalSharp.PatternMatching.dll" />
+    <file src="..\Json.Comparer\bin\Release\Json.Comparer.dll" target="lib\net451\Json.Comparer.dll" />
   </files>
 </package>

@@ -15,9 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{E6639411
 		Nuget\Json.Comparer.nuspec = Nuget\Json.Comparer.nuspec
 		Nuget\NuGet.Config = Nuget\NuGet.Config
 		Nuget\NuGet.exe = Nuget\NuGet.exe
-		Nuget\PackageAll.bat = Nuget\PackageAll.bat
-		Nuget\PackageAllLocal.bat = Nuget\PackageAllLocal.bat
-		Nuget\PackageFunctionalSharp.PatternMatching.DiscriminatedUnions.bat = Nuget\PackageFunctionalSharp.PatternMatching.DiscriminatedUnions.bat
+		Nuget\PackageAndPublishLocal.bat = Nuget\PackageAndPublishLocal.bat
+		Nuget\PackageAndPublishToNuget.bat = Nuget\PackageAndPublishToNuget.bat
 	EndProjectSection
 EndProject
 Global
