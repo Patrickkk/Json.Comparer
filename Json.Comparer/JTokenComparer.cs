@@ -242,7 +242,7 @@ namespace Json.Comparer
 
             if (duplicateKeys.Any())
             {
-                throw new ArgumentOutOfRangeException($"duplicate keys when joining found. The following duplicate keys were found {string.Join(",", duplicateKeys)}. cannot join with duplicate keys.");
+                throw new ArgumentOutOfRangeException($"duplicate keys when joining found. The following duplicate keys were found {string.Join(",", duplicateKeys.Select(x => x.Key))}. cannot join with duplicate keys.");
             }
 
             var source1Lookup = source1WithIndex.ToLookup(x => x.key);
