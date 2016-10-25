@@ -13,7 +13,7 @@
     <summary>Deep compares 2 objects or JTokens and returns the the result of the comparrison per element/property. allowing for reporting of difference between all kinds of objects.</summary>
     <releaseNotes>
       - initial release.
-      - deep compare objects
+      - deep compare objects.
     </releaseNotes>
     <copyright>Patrick van Lohuizen</copyright>
     <language>en-US</language>
@@ -21,5 +21,6 @@
   </metadata>
   <files>
     <file src="..\Json.Comparer\bin\Release\Json.Comparer.dll" target="lib\net451\Json.Comparer.dll" />
+    <file src="..\Json.Comparer.TextResultReporter\bin\Release\Json.Comparer.TextResultReporter.dll" target="lib\net451\Json.Comparer.TextResultReporter.dll" />
   </files>
 </package>

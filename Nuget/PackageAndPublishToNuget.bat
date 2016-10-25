@@ -6,6 +6,6 @@ CALL Build.bat
 
 mkdir Publish
 NuGet Pack Json.Comparer.nuspec -OutputDirectory Publish
-Nuget push "\Publish\Json.Comparer*.nupkg"
+Nuget push "Publish\Json.Comparer*.nupkg"  -Source "nuget.org"
 rmdir Publish /s /q
 pause
