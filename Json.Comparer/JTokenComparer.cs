@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Json.Comparer.ValueConverters;
 using Newtonsoft.Json.Linq;
 using NullGuard;
 
@@ -10,11 +11,17 @@ namespace Json.Comparer
     {
         private readonly IArrayKeySelector arrayKeySelector;
         private readonly IEnumerable<IComparrisonFilter> filters;
+        private readonly IValueConverter valueConverter;
 
-        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters)
+        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters, IValueConverter valueConverter)
         {
             this.filters = filters;
             this.arrayKeySelector = arrayKeySelector;
+            this.valueConverter = valueConverter;
+        }
+
+        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters) : this(arrayKeySelector, filters, new NonConvertingConverter())
+        {
         }
 
         public JTokenComparer(IArrayKeySelector arrayKeySelector, IComparrisonFilter filter) : this(arrayKeySelector, new IComparrisonFilter[] { filter })
@@ -104,16 +111,16 @@ namespace Json.Comparer
                     Source2Value = token2.Value?.ToString().EmptyIfNull(),
                 };
             }
-            if (token1 == null) { return new JValueComparrisonResult { Key = key, Path = token2.Path, ComparrisonResult = ComparisonResult.MissingInSource1, Source1Value = null, Source2Value = token2.Value?.ToString() }; }
-            if (token2 == null) { return new JValueComparrisonResult { Key = key, Path = token1.Path, ComparrisonResult = ComparisonResult.MissingInSource2, Source1Value = token1.Value?.ToString(), Source2Value = null }; }
+            if (token1 == null) { return new JValueComparrisonResult { Key = key, Path = token2.Path, ComparrisonResult = ComparisonResult.MissingInSource1, Source1Value = null, Source2Value = valueConverter.Convert(token2.Value?.ToString()) }; }
+            if (token2 == null) { return new JValueComparrisonResult { Key = key, Path = token1.Path, ComparrisonResult = ComparisonResult.MissingInSource2, Source1Value = valueConverter.Convert(token1.Value?.ToString()), Source2Value = null }; }
 
             return new JValueComparrisonResult
             {
                 Key = key,
                 Path = token1.Path,
-                Source1Value = token1.Value?.ToString(),
-                Source2Value = token2.Value?.ToString(),
-                ComparrisonResult = token1.Value?.ToString() == token2.Value?.ToString() ? ComparisonResult.Identical : ComparisonResult.Different
+                Source1Value = valueConverter.Convert(token1.Value?.ToString()),
+                Source2Value = valueConverter.Convert(token2.Value?.ToString()),
+                ComparrisonResult = valueConverter.Convert(token1.Value?.ToString()) == valueConverter.Convert(token2.Value?.ToString()) ? ComparisonResult.Identical : ComparisonResult.Different
             };
         }
 

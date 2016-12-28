@@ -56,6 +56,7 @@
     <Compile Include="IArrayKeySelector.cs" />
     <Compile Include="IFilter.cs" />
     <Compile Include="IndexArrayKeySelector.cs" />
+    <Compile Include="IValueConverter.cs" />
     <Compile Include="JArrayComparrisonResult.cs" />
     <Compile Include="JObjectComparrisonResult.cs" />
     <Compile Include="JoinResultWithKey.cs" />
@@ -67,6 +68,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="TokenComparrisonInput.cs" />
+    <Compile Include="ValueConverters\NonConvertingConverter.cs" />
+    <Compile Include="ValueConverters\TrimmingValueconverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
