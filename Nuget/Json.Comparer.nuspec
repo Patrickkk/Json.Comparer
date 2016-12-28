@@ -20,5 +20,6 @@
   </metadata>
   <files>
     <file src="..\Json.Comparer\bin\Release\Json.Comparer.dll" target="lib\net451\Json.Comparer.dll" />
+    <file src="..\Json.Comparer.TextResultReporter\bin\Release\Json.Comparer.TextResultReporter.dll" target="lib\net451\Json.Comparer.TextResultReporter.dll" />
   </files>
 </package>
