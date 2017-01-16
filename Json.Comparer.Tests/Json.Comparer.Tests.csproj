@@ -78,6 +78,7 @@
     <Compile Include="CustomArraySelectorTests.cs" />
     <Compile Include="Filters\FilterAll.cs" />
     <Compile Include="Filters\FilterPropertyByNameTests.cs" />
+    <Compile Include="NullComparrisonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestComparrisonFilters.cs" />
     <Compile Include="TestMissingProperties.cs" />

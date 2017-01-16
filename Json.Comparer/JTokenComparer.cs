@@ -48,37 +48,47 @@ namespace Json.Comparer
         /// <returns></returns>
         public virtual JTokenComparrisonResult CompareTokens(string key, [AllowNull]JToken token1, [AllowNull]JToken token2)
         {
-            var type = token1 == null ? token2.Type : token1.Type;
+            var type = token1 == null
+                || token1.Type == JTokenType.Null
+                ? token2.Type : token1.Type;
 
-            switch (type)
+            try
             {
-                case JTokenType.None:
-                    throw new NotImplementedException();
-                case JTokenType.Object:
-                    return CompareObjects(key, (JObject)token1, (JObject)token2);
+                switch (type)
+                {
+                    case JTokenType.None:
+                        throw new NotImplementedException();
+                    case JTokenType.Object:
+                        return CompareObjects(key, token1, token2);
 
-                case JTokenType.Array:
-                    return CompareArrays(key, (JArray)token1, (JArray)token2);
+                    case JTokenType.Array:
+                        return CompareArrays(key, (JArray)token1, (JArray)token2);
 
-                case JTokenType.Property:
-                    return CompareProperty(key, (JProperty)token1, (JProperty)token2);
+                    case JTokenType.Property:
+                        return CompareProperty(key, (JProperty)token1, (JProperty)token2);
 
-                case JTokenType.Integer:
-                case JTokenType.Float:
-                case JTokenType.String:
-                case JTokenType.Boolean:
-                case JTokenType.Null:
-                case JTokenType.Undefined:
-                case JTokenType.Date:
-                case JTokenType.Raw:
-                case JTokenType.Bytes:
-                case JTokenType.Guid:
-                case JTokenType.Uri:
-                case JTokenType.TimeSpan:
-                    return CompareValue(key, (JValue)token1, (JValue)token2);
+                    case JTokenType.Integer:
+                    case JTokenType.Float:
+                    case JTokenType.String:
+                    case JTokenType.Boolean:
+                    case JTokenType.Null:
+                    case JTokenType.Undefined:
+                    case JTokenType.Date:
+                    case JTokenType.Raw:
+                    case JTokenType.Bytes:
+                    case JTokenType.Guid:
+                    case JTokenType.Uri:
+                    case JTokenType.TimeSpan:
+                        return CompareValue(key, (JValue)token1, (JValue)token2);
 
-                default:
-                    throw new PlatformNotSupportedException($"Dunno yet {token1.Type}");
+                    default:
+                        throw new PlatformNotSupportedException($"Dunno yet {token1.Type}");
+                }
+            }
+            catch (Exception e)
+            {
+                var a = e;
+                throw;
             }
         }
 
@@ -148,6 +158,11 @@ namespace Json.Comparer
                 ComparrisonResult = ComparrisonResultFromCollection(arrayContentComparrisonResult),
                 ArrayElementComparrisons = arrayContentComparrisonResult
             };
+        }
+
+        private JTokenComparrisonResult CompareObjects(string key, JToken token1, JToken token2)
+        {
+            return CompareObjects(key, token1 as JObject, token2 as JObject);
         }
 
         /// <summary>
