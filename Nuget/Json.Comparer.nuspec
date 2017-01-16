@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Json.Comparer</id>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <title>Json.Comparer</title>
     <authors>Patrick van Lohuizen</authors>
     <owners>Patrick van Lohuizen</owners>
@@ -12,7 +12,7 @@
     <description>Deep compares 2 objects or jtokens/jarrays/jobjects and returns the the result of the comparrison per element/property. allowing for reporting of difference between all kinds of objects.</description>
     <summary>Deep compares 2 objects or JTokens and returns the the result of the comparrison per element/property. allowing for reporting of difference between all kinds of objects.</summary>
     <releaseNotes>
-      - added value converter to allow for intercepting of values before comparrison.
+      - fixed bug for comparing property with null value.
     </releaseNotes>
     <copyright>Patrick van Lohuizen</copyright>
     <language>en-US</language>
