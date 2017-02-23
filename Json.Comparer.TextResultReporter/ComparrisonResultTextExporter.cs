@@ -53,7 +53,7 @@ namespace Json.Comparer.TextResultReporter
         {
             if (resultsToReport.Contains(arrayComparrison.ComparrisonResult))
             {
-                if (arrayComparrison.ComparrisonResult == ComparisonResult.MissingInSource1 || arrayComparrison.ComparrisonResult == ComparisonResult.MissingInSource2)
+                if (arrayComparrison.ComparrisonResult == ComparisonResult.MissingInSource1 || arrayComparrison.ComparrisonResult == ComparisonResult.MissingInSource2 || arrayComparrison.ComparrisonResult == ComparisonResult.Identical)
                 {
                     return ReportElement(arrayComparrison);
                 }
@@ -71,7 +71,7 @@ namespace Json.Comparer.TextResultReporter
         {
             if (resultsToReport.Contains(objectcomparrison.ComparrisonResult))
             {
-                if (objectcomparrison.ComparrisonResult == ComparisonResult.MissingInSource1 || objectcomparrison.ComparrisonResult == ComparisonResult.MissingInSource2)
+                if (objectcomparrison.ComparrisonResult == ComparisonResult.MissingInSource1 || objectcomparrison.ComparrisonResult == ComparisonResult.MissingInSource2 || objectcomparrison.ComparrisonResult == ComparisonResult.Identical)
                 {
                     return ReportElement(objectcomparrison);
                 }
