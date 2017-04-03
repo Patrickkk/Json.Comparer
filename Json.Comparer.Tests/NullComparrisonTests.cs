@@ -18,7 +18,7 @@ namespace Json.Comparer
 
             var result = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jObject1, jObject2);
             result.ComparrisonResult.ShouldBeEquivalentTo(ComparisonResult.Identical);
-            var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 });
+            var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace Json.Comparer
 
             var result = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jObject1, jObject2);
             result.ComparrisonResult.ShouldBeEquivalentTo(ComparisonResult.Different);
-            var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 });
+            var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace Json.Comparer
 
             var result = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jObject1, jObject2);
             result.ComparrisonResult.ShouldBeEquivalentTo(ComparisonResult.Different);
-            var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 });
+            var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
         }
     }
 }

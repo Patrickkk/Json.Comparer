@@ -1,10 +1,10 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Linq;
+using FluentAssertions;
 using Json.Comparer.Tests.TestObjects;
 using Json.Comparer.TextResultReporter;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
 using Xunit;
 
 namespace Json.Comparer.Tests
@@ -28,7 +28,7 @@ namespace Json.Comparer.Tests
             childrenValueComparrison.ComparrisonResult.Should().Be(ComparisonResult.Different);
             childrenValueComparrison.ArrayElementComparrisons.All(x => x.ComparrisonResult == ComparisonResult.MissingInSource2).Should().Be(true);
 
-            var report = ComparrisonResultTextExporter.Report(compareResult, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 });
+            var report = ComparrisonResultTextExporter.Report(compareResult, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
 
             var compareResultAsJson = JsonConvert.SerializeObject(compareResult, Formatting.Indented);
         }
