@@ -11,10 +11,10 @@ namespace Json.Comparer.TextResultReporter
             if (comparrisonResult != null)
             {
                 return comparrisonResult.Match(
-                    x => ReportObject(x, resultsToReport, settings),
-                    x => ReportArray(x, resultsToReport, settings),
-                    x => ReportProperty(x, resultsToReport, settings),
-                    x => ReportValue(x, resultsToReport, settings));
+                    x => ReportObject(x, resultsToReport, settings).TrimEnd(Environment.NewLine.ToCharArray()),
+                    x => ReportArray(x, resultsToReport, settings).TrimEnd(Environment.NewLine.ToCharArray()),
+                    x => ReportProperty(x, resultsToReport, settings).TrimEnd(Environment.NewLine.ToCharArray()),
+                    x => ReportValue(x, resultsToReport, settings).TrimEnd(Environment.NewLine.ToCharArray()));
             }
             else
             {
@@ -38,14 +38,14 @@ namespace Json.Comparer.TextResultReporter
         {
             if (propertyComparrison.PropertyValueComparissonResult?.Type == ComparedTokenType.Value)
             {
-                return ReportElement(propertyComparrison, settings)
-                    + ReportValue((JValueComparrisonResult)propertyComparrison.PropertyValueComparissonResult, resultsToReport, settings);
+                return (ReportElement(propertyComparrison, settings)
+                    + ReportValue((JValueComparrisonResult)propertyComparrison.PropertyValueComparissonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
             }
             else
             {
-                return ReportElement(propertyComparrison, settings)
+                return (ReportElement(propertyComparrison, settings)
                     + Environment.NewLine
-                    + Report(propertyComparrison.PropertyValueComparissonResult, resultsToReport, settings);
+                    + Report(propertyComparrison.PropertyValueComparissonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
             }
         }
 
@@ -59,7 +59,7 @@ namespace Json.Comparer.TextResultReporter
                 }
                 var elementsToReport = arrayComparrison.ArrayElementComparrisons.Where(comparrison => resultsToReport.Contains(comparrison.ComparrisonResult));
 
-                return string.Join(Environment.NewLine, elementsToReport.Select(x => Report(x, resultsToReport, settings)).Where(x => !string.IsNullOrEmpty(x)));
+                return string.Join(Environment.NewLine, elementsToReport.Select(x => Report(x, resultsToReport, settings)).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
             else
             {
@@ -80,7 +80,7 @@ namespace Json.Comparer.TextResultReporter
 
                 return ReportElement(objectcomparrison, settings)
                     + Environment.NewLine
-                    + string.Join(Environment.NewLine, propertiesToReport.Select(x => Report(x, resultsToReport, settings)).Where(x => !string.IsNullOrEmpty(x)));
+                    + string.Join(Environment.NewLine, propertiesToReport.Select(x => Report(x, resultsToReport, settings)).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
             else
             {

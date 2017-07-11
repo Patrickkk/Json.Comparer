@@ -12,12 +12,18 @@ namespace Json.Comparer
         private readonly IArrayKeySelector arrayKeySelector;
         private readonly IEnumerable<IComparrisonFilter> filters;
         private readonly IValueConverter valueConverter;
+        private readonly IEnumerable<ComparisonResult> filteredMissingComparrisonResults;
 
-        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters, IValueConverter valueConverter)
+        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters, IEnumerable<ComparisonResult> filteredMissingComparrisonResults, IValueConverter valueConverter)
         {
+            this.filteredMissingComparrisonResults = filteredMissingComparrisonResults;
             this.filters = filters;
             this.arrayKeySelector = arrayKeySelector;
             this.valueConverter = valueConverter;
+        }
+
+        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters, IValueConverter valueConverter) : this(arrayKeySelector, filters, Enumerable.Empty<ComparisonResult>(), valueConverter)
+        {
         }
 
         public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters) : this(arrayKeySelector, filters, new NonConvertingConverter())
@@ -125,8 +131,8 @@ namespace Json.Comparer
                     Source2Value = token2.Value?.ToString().EmptyIfNull(),
                 };
             }
-            if (token1 == null) { return new JValueComparrisonResult { Key = key, Path = token2.Path, ComparrisonResult = ComparisonResult.MissingInSource1, Source1Value = null, Source2Value = valueConverter.Convert(token2.Value?.ToString()) }; }
-            if (token2 == null) { return new JValueComparrisonResult { Key = key, Path = token1.Path, ComparrisonResult = ComparisonResult.MissingInSource2, Source1Value = valueConverter.Convert(token1.Value?.ToString()), Source2Value = null }; }
+            if (token1 == null) { return new JValueComparrisonResult { Key = key, Path = token2.Path, ComparrisonResult = MissingOrFiltered(ComparisonResult.MissingInSource1), Source1Value = null, Source2Value = valueConverter.Convert(token2.Value?.ToString()) }; }
+            if (token2 == null) { return new JValueComparrisonResult { Key = key, Path = token1.Path, ComparrisonResult = MissingOrFiltered(ComparisonResult.MissingInSource2), Source1Value = valueConverter.Convert(token1.Value?.ToString()), Source2Value = null }; }
 
             return new JValueComparrisonResult
             {
@@ -136,6 +142,18 @@ namespace Json.Comparer
                 Source2Value = valueConverter.Convert(token2.Value?.ToString()),
                 ComparrisonResult = valueConverter.Convert(token1.Value?.ToString()) == valueConverter.Convert(token2.Value?.ToString()) ? ComparisonResult.Identical : ComparisonResult.Different
             };
+        }
+
+        private ComparisonResult MissingOrFiltered(ComparisonResult result)
+        {
+            if (filteredMissingComparrisonResults.Contains(result))
+            {
+                return ComparisonResult.Filtered;
+            }
+            else
+            {
+                return result;
+            }
         }
 
         /// <summary>
@@ -315,8 +333,8 @@ namespace Json.Comparer
         private ComparisonResult MissingOrFilteredComparrisonResult(string key, JToken token1, JToken token2)
         {
             if (ShouldBeFiltered(key, token1, token2)) { return ComparisonResult.Filtered; }
-            if (token1 == null) { return ComparisonResult.MissingInSource1; }
-            if (token2 == null) { return ComparisonResult.MissingInSource2; }
+            if (token1 == null) { return MissingOrFiltered(ComparisonResult.MissingInSource1); }
+            if (token2 == null) { return MissingOrFiltered(ComparisonResult.MissingInSource2); }
             throw new Exception("This shouldn't happen.");
         }
 
