@@ -32,6 +32,10 @@ namespace Json.Comparer
         {
         }
 
+        public JTokenComparer() : this(new IndexArrayKeySelector(), Enumerable.Empty<IComparrisonFilter>())
+        {
+        }
+
         public virtual JTokenComparrisonResult Compare(object object1, object object2)
         {
             var Jobject1 = JToken.FromObject(object1);
