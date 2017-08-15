@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparedifferentObjects.cs" />
+    <Compile Include="CompareDifferentStructuresTests.cs" />
     <Compile Include="CompareEqualObjects.cs" />
     <Compile Include="ComplexObjectDifferenceTests.cs" />
     <Compile Include="CustomArrayKeySelector.cs" />
