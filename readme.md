@@ -1,10 +1,6 @@
 # Json.Comparer - Compare JTokens, JObjects, JArrays and 
 I have created Json.Comparer in order to allow for easy comparison of any object in .net and 
-comparing values from different systems and eventualy to run integrationtests and see if the results are as expected and if not to easily find any difference. The comparer is based upon newtonsoft.json.
+comparing values from different systems and eventualy to run integrationtests and see if the results are as expected and if not to easily find any difference. The comparer is based upon newtonsoft.json. It was developed for comparing results of a migration project.
 
 ## Features
 - Compare json files and return difference.
-
-## Future
-- Return only difference as json object.
-- Revert object using compareresult.
