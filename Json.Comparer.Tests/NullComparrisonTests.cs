@@ -17,7 +17,7 @@ namespace Json.Comparer
             jObject2.Add("Prop", new JValue((object)null));
 
             var result = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jObject1, jObject2);
-            result.ComparrisonResult.ShouldBeEquivalentTo(ComparisonResult.Identical);
+            result.ComparrisonResult.Should().Be(ComparisonResult.Identical);
             var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
         }
 
@@ -30,7 +30,7 @@ namespace Json.Comparer
             jObject2.Add("Prop", JObject.FromObject(new ComplexObject(false)));
 
             var result = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jObject1, jObject2);
-            result.ComparrisonResult.ShouldBeEquivalentTo(ComparisonResult.Different);
+            result.ComparrisonResult.Should().Be(ComparisonResult.Different);
             var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
         }
 
@@ -43,7 +43,7 @@ namespace Json.Comparer
             jObject2.Add("Prop", new JValue((object)null));
 
             var result = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jObject1, jObject2);
-            result.ComparrisonResult.ShouldBeEquivalentTo(ComparisonResult.Different);
+            result.ComparrisonResult.Should().Be(ComparisonResult.Different);
             var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
         }
     }
