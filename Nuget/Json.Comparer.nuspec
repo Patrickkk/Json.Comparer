@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Json.Comparer</id>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
     <title>Json.Comparer</title>
     <authors>Patrick van Lohuizen</authors>
     <owners>Patrick van Lohuizen</owners>
@@ -12,19 +12,19 @@
     <description>Deep compares 2 objects or jtokens/jarrays/jobjects and returns the the result of the comparrison per element/property. allowing for reporting of difference between all kinds of objects.</description>
     <summary>Deep compares 2 objects or JTokens and returns the the result of the comparrison per element/property. allowing for reporting of difference between all kinds of objects.</summary>
     <releaseNotes>
-      - added option to filter missinginsource1/missing in source 2
+      - switch to netstandard
     </releaseNotes>
     <copyright>Patrick van Lohuizen</copyright>
     <language>en-US</language>
     <tags>json,compare,comparer,newtonsoft.json,.net,</tags>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="10.0" />
+      <dependency id="Newtonsoft.Json" version="13.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\Json.Comparer\bin\Release\Json.Comparer.dll" target="lib\net451\Json.Comparer.dll" />
-    <file src="..\Json.Comparer\bin\Release\Json.Comparer.pdb" target="lib\net451\Json.Comparer.pdb" />
-    <file src="..\Json.Comparer.TextResultReporter\bin\Release\Json.Comparer.TextResultReporter.dll" target="lib\net451\Json.Comparer.TextResultReporter.dll" />
-    <file src="..\Json.Comparer.TextResultReporter\bin\Release\Json.Comparer.TextResultReporter.pdb" target="lib\net451\Json.Comparer.TextResultReporter.pdb" />
+    <file src="..\Json.Comparer\bin\Release\netstandard2.1\Json.Comparer.dll" target="lib\netstandard2.1\Json.Comparer.dll" />
+    <file src="..\Json.Comparer\bin\Release\netstandard2.1\Json.Comparer.pdb" target="lib\netstandard2.1\Json.Comparer.pdb" />
+    <file src="..\Json.Comparer.TextResultReporter\bin\Release\netstandard2.1\Json.Comparer.TextResultReporter.dll" target="lib\netstandard2.1\Json.Comparer.TextResultReporter.dll" />
+    <file src="..\Json.Comparer.TextResultReporter\bin\Release\netstandard2.1\Json.Comparer.TextResultReporter.pdb" target="lib\netstandard2.1\Json.Comparer.TextResultReporter.pdb" />
   </files>
 </package>
