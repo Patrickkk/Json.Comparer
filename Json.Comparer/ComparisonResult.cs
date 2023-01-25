@@ -31,7 +31,7 @@
         DifferentTypes,
 
         /// <summary>
-        /// The tokens comparrison was skipped and filtered out.
+        /// The tokens Comparison was skipped and filtered out.
         /// </summary>
         Filtered,
     }

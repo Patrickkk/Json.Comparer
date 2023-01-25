@@ -14,7 +14,7 @@ namespace Json.Comparer.Tests
                 new SimpleObject { DateTimeProperty = new DateTime(2345, 1, 1) },
                 new SimpleObject { DateTimeProperty = new DateTime(2000, 1, 1) });
 
-            compareResult.ComparrisonResult.Should().Be(ComparisonResult.Different, because: "The JObjects are created with different datetime");
+            compareResult.ComparisonResult.Should().Be(ComparisonResult.Different, because: "The JObjects are created with different datetime");
         }
     }
 }

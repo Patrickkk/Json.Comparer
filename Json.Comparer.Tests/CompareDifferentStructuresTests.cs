@@ -15,10 +15,10 @@ namespace Json.Comparer.Tests
             simpleObject1.AAA = "";
             dynamic simpleObject2 = new ExpandoObject();
             simpleObject2.BBB = "";
-            JTokenComparrisonResult compareResult = new JTokenComparer(new IndexArrayKeySelector(), Enumerable.Empty<IComparrisonFilter>(), new ComparisonResult[] { ComparisonResult.MissingInSource2 }, new NonConvertingConverter())
+            JTokenComparisonResult compareResult = new JTokenComparer(new IndexArrayKeySelector(), Enumerable.Empty<IComparisonFilter>(), new ComparisonResult[] { ComparisonResult.MissingInSource2 }, new NonConvertingConverter())
                 .Compare(simpleObject1, simpleObject2);
 
-            compareResult.ComparrisonResult.Should().Be(ComparisonResult.Identical, because: "The JObjects are created from the same CLR object instance");
+            compareResult.ComparisonResult.Should().Be(ComparisonResult.Identical, because: "The JObjects are created from the same CLR object instance");
         }
     }
 }

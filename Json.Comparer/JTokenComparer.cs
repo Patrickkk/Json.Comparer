@@ -10,11 +10,11 @@ namespace Json.Comparer
     public class JTokenComparer
     {
         private readonly IArrayKeySelector arrayKeySelector;
-        private readonly IEnumerable<IComparrisonFilter> filters;
+        private readonly IEnumerable<IComparisonFilter> filters;
         private readonly IValueConverter valueConverter;
         private readonly IEnumerable<ComparisonResult> filteredMissingComparrisonResults;
 
-        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters, IEnumerable<ComparisonResult> filteredMissingComparrisonResults, IValueConverter valueConverter)
+        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparisonFilter> filters, IEnumerable<ComparisonResult> filteredMissingComparrisonResults, IValueConverter valueConverter)
         {
             this.filteredMissingComparrisonResults = filteredMissingComparrisonResults;
             this.filters = filters;
@@ -22,27 +22,27 @@ namespace Json.Comparer
             this.valueConverter = valueConverter;
         }
 
-        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters, IValueConverter valueConverter) : this(arrayKeySelector, filters, Enumerable.Empty<ComparisonResult>(), valueConverter)
+        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparisonFilter> filters, IValueConverter valueConverter) : this(arrayKeySelector, filters, Enumerable.Empty<ComparisonResult>(), valueConverter)
         {
         }
 
-        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparrisonFilter> filters) : this(arrayKeySelector, filters, new NonConvertingConverter())
+        public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparisonFilter> filters) : this(arrayKeySelector, filters, new NonConvertingConverter())
         {
         }
 
-        public JTokenComparer(IArrayKeySelector arrayKeySelector, IComparrisonFilter filter) : this(arrayKeySelector, new IComparrisonFilter[] { filter })
+        public JTokenComparer(IArrayKeySelector arrayKeySelector, IComparisonFilter filter) : this(arrayKeySelector, new IComparisonFilter[] { filter })
         {
         }
 
-        public JTokenComparer(IArrayKeySelector arrayKeySelector) : this(arrayKeySelector, Enumerable.Empty<IComparrisonFilter>())
+        public JTokenComparer(IArrayKeySelector arrayKeySelector) : this(arrayKeySelector, Enumerable.Empty<IComparisonFilter>())
         {
         }
 
-        public JTokenComparer() : this(new IndexArrayKeySelector(), Enumerable.Empty<IComparrisonFilter>())
+        public JTokenComparer() : this(new IndexArrayKeySelector(), Enumerable.Empty<IComparisonFilter>())
         {
         }
 
-        public virtual JTokenComparrisonResult Compare(object object1, object object2)
+        public virtual JTokenComparisonResult Compare(object object1, object object2)
         {
             var Jobject1 = JToken.FromObject(object1);
             var Jobject2 = JToken.FromObject(object2);
@@ -56,7 +56,7 @@ namespace Json.Comparer
         /// <param name="token1"></param>
         /// <param name="token2"></param>
         /// <returns></returns>
-        public virtual JTokenComparrisonResult CompareTokens(string key, [AllowNull]JToken token1, [AllowNull]JToken token2)
+        public virtual JTokenComparisonResult CompareTokens(string key, [AllowNull]JToken token1, [AllowNull]JToken token2)
         {
             var type = token1 == null
                 || token1.Type == JTokenType.Null
@@ -107,7 +107,7 @@ namespace Json.Comparer
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
-        public virtual JTokenComparrisonResult CompareTokens(JoinResultWithKey<JToken, string> values)
+        public virtual JTokenComparisonResult CompareTokens(JoinResultWithKey<JToken, string> values)
         {
             return CompareTokens(values.Key, values.Value1, values.Value2);
         }
@@ -131,8 +131,8 @@ namespace Json.Comparer
                     Source2Value = token2.Value?.ToString().EmptyIfNull(),
                 };
             }
-            if (token1 == null) { return new JValueComparrisonResult { Key = key, Path = token2.Path, ComparrisonResult = MissingOrFiltered(ComparisonResult.MissingInSource1), Source1Value = null, Source2Value = valueConverter.Convert(token2.Value?.ToString()) }; }
-            if (token2 == null) { return new JValueComparrisonResult { Key = key, Path = token1.Path, ComparrisonResult = MissingOrFiltered(ComparisonResult.MissingInSource2), Source1Value = valueConverter.Convert(token1.Value?.ToString()), Source2Value = null }; }
+            if (token1 == null) { return new JValueComparrisonResult { Key = key, Path = token2.Path, ComparisonResult = MissingOrFiltered(ComparisonResult.MissingInSource1), Source1Value = null, Source2Value = valueConverter.Convert(token2.Value?.ToString()) }; }
+            if (token2 == null) { return new JValueComparrisonResult { Key = key, Path = token1.Path, ComparisonResult = MissingOrFiltered(ComparisonResult.MissingInSource2), Source1Value = valueConverter.Convert(token1.Value?.ToString()), Source2Value = null }; }
 
             return new JValueComparrisonResult
             {
@@ -140,7 +140,7 @@ namespace Json.Comparer
                 Path = token1.Path,
                 Source1Value = valueConverter.Convert(token1.Value?.ToString()),
                 Source2Value = valueConverter.Convert(token2.Value?.ToString()),
-                ComparrisonResult = valueConverter.Convert(token1.Value?.ToString()) == valueConverter.Convert(token2.Value?.ToString()) ? ComparisonResult.Identical : ComparisonResult.Different
+                ComparisonResult = valueConverter.Convert(token1.Value?.ToString()) == valueConverter.Convert(token2.Value?.ToString()) ? ComparisonResult.Identical : ComparisonResult.Different
             };
         }
 
@@ -177,12 +177,12 @@ namespace Json.Comparer
             {
                 Key = key,
                 Path = token1.Path,
-                ComparrisonResult = ComparrisonResultFromCollection(arrayContentComparrisonResult),
+                ComparisonResult = ComparisonResultFromCollection(arrayContentComparrisonResult),
                 ArrayElementComparrisons = arrayContentComparrisonResult
             };
         }
 
-        private JTokenComparrisonResult CompareObjects(string key, JToken token1, JToken token2)
+        private JTokenComparisonResult CompareObjects(string key, JToken token1, JToken token2)
         {
             return CompareObjects(key, token1 as JObject, token2 as JObject);
         }
@@ -194,21 +194,21 @@ namespace Json.Comparer
         /// <param name="object1"></param>
         /// <param name="object2"></param>
         /// <returns></returns>
-        public virtual JObjectComparrisonResult CompareObjects(string key, [AllowNull]JObject object1, [AllowNull]JObject object2)
+        public virtual JObjectComparisonResult CompareObjects(string key, [AllowNull]JObject object1, [AllowNull]JObject object2)
         {
             if (MissingOrFiltered(key, object1, object2))
             {
-                return MissingOrFilteredResult<JObjectComparrisonResult>(key, object1, object2);
+                return MissingOrFilteredResult<JObjectComparisonResult>(key, object1, object2);
             }
 
-            var propertyComparrison = OuterJoin(object1.Children<JProperty>(), object2.Children<JProperty>(), (x, y) => x.Name)
+            var propertyComparison = OuterJoin(object1.Children<JProperty>(), object2.Children<JProperty>(), (x, y) => x.Name)
                                           .Select(CompareProperty).ToList();
-            return new JObjectComparrisonResult
+            return new JObjectComparisonResult
             {
                 Key = key,
                 Path = object1.Path,
-                PropertyComparrisons = propertyComparrison,
-                ComparrisonResult = ComparrisonResultFromCollection(propertyComparrison)
+                PropertyComparisons = propertyComparison,
+                ComparisonResult = ComparisonResultFromCollection(propertyComparison)
             };
         }
 
@@ -217,9 +217,9 @@ namespace Json.Comparer
         /// </summary>
         /// <param name="collection"></param>
         /// <returns></returns>
-        public virtual ComparisonResult ComparrisonResultFromCollection(IEnumerable<JTokenComparrisonResult> collection)
+        public virtual ComparisonResult ComparisonResultFromCollection(IEnumerable<JTokenComparisonResult> collection)
         {
-            if (collection.Any(x => x.ComparrisonResult != ComparisonResult.Identical && x.ComparrisonResult != ComparisonResult.Filtered))
+            if (collection.Any(x => x.ComparisonResult != ComparisonResult.Identical && x.ComparisonResult != ComparisonResult.Filtered))
             {
                 return ComparisonResult.Different;
             }
@@ -229,7 +229,7 @@ namespace Json.Comparer
             }
         }
 
-        private JPropertyComparrisonResult CompareProperty(JoinResultWithKey<JProperty, string> joinedProperty)
+        private JPropertyComparisonResult CompareProperty(JoinResultWithKey<JProperty, string> joinedProperty)
         {
             return CompareProperty(joinedProperty.Key, joinedProperty.Value1, joinedProperty.Value2);
         }
@@ -241,23 +241,23 @@ namespace Json.Comparer
         /// <param name="property1"></param>
         /// <param name="property2"></param>
         /// <returns></returns>
-        public virtual JPropertyComparrisonResult CompareProperty(string key, [AllowNull]JProperty property1, [AllowNull]JProperty property2)
+        public virtual JPropertyComparisonResult CompareProperty(string key, [AllowNull]JProperty property1, [AllowNull]JProperty property2)
         {
             if (MissingOrFiltered(key, property1, property2))
             {
-                return MissingOrFilteredResult<JPropertyComparrisonResult>(key, property1, property2)
+                return MissingOrFilteredResult<JPropertyComparisonResult>(key, property1, property2)
                     .With(x => x.Name = FirstNonNullValueOrDefault(property1?.Name, property2?.Name));
             }
 
-            var comparrisonResult = CompareTokens(key, property1.Value, property2.Value);
+            var comparisonResult = CompareTokens(key, property1.Value, property2.Value);
 
-            return new JPropertyComparrisonResult
+            return new JPropertyComparisonResult
             {
                 Key = key,
                 Path = property1.Path,
                 Name = property1.Name,
-                ComparrisonResult = comparrisonResult.ComparrisonResult,
-                PropertyValueComparissonResult = comparrisonResult
+                ComparisonResult = comparisonResult.ComparisonResult,
+                PropertyValueComparisonResult = comparisonResult
             };
         }
 
@@ -320,17 +320,17 @@ namespace Json.Comparer
                 ShouldBeFiltered(key, token1, token2);
         }
 
-        private TComparrison MissingOrFilteredResult<TComparrison>(string key, JToken token1, JToken token2)
-    where TComparrison : JTokenComparrisonResult, new()
+        private TComparison MissingOrFilteredResult<TComparison>(string key, JToken token1, JToken token2)
+    where TComparison : JTokenComparisonResult, new()
         {
-            var result = Activator.CreateInstance<TComparrison>();
-            result.ComparrisonResult = MissingOrFilteredComparrisonResult(key, token1, token2);
+            var result = Activator.CreateInstance<TComparison>();
+            result.ComparisonResult = MissingOrFilteredComparisonResult(key, token1, token2);
             result.Path = FirstNonNullValue(token1?.Path, token2?.Path);
             result.Key = key;
             return result;
         }
 
-        private ComparisonResult MissingOrFilteredComparrisonResult(string key, JToken token1, JToken token2)
+        private ComparisonResult MissingOrFilteredComparisonResult(string key, JToken token1, JToken token2)
         {
             if (ShouldBeFiltered(key, token1, token2)) { return ComparisonResult.Filtered; }
             if (token1 == null) { return MissingOrFiltered(ComparisonResult.MissingInSource1); }

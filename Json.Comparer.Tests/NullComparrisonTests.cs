@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Json.Comparer
 {
-    public class NullComparrisonTests
+    public class NullComparisonTests
     {
         [Fact]
         public void CompareTwoPropertiesThatAreJTokenNull()
@@ -17,8 +17,8 @@ namespace Json.Comparer
             jObject2.Add("Prop", new JValue((object)null));
 
             var result = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jObject1, jObject2);
-            result.ComparrisonResult.Should().Be(ComparisonResult.Identical);
-            var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
+            result.ComparisonResult.Should().Be(ComparisonResult.Identical);
+            var resultReport = ComparisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
         }
 
         [Fact]
@@ -30,8 +30,8 @@ namespace Json.Comparer
             jObject2.Add("Prop", JObject.FromObject(new ComplexObject(false)));
 
             var result = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jObject1, jObject2);
-            result.ComparrisonResult.Should().Be(ComparisonResult.Different);
-            var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
+            result.ComparisonResult.Should().Be(ComparisonResult.Different);
+            var resultReport = ComparisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
         }
 
         [Fact]
@@ -43,8 +43,8 @@ namespace Json.Comparer
             jObject2.Add("Prop", new JValue((object)null));
 
             var result = new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jObject1, jObject2);
-            result.ComparrisonResult.Should().Be(ComparisonResult.Different);
-            var resultReport = ComparrisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
+            result.ComparisonResult.Should().Be(ComparisonResult.Different);
+            var resultReport = ComparisonResultTextExporter.Report(result, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.DifferentTypes, ComparisonResult.Filtered, ComparisonResult.Identical, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
         }
     }
 }

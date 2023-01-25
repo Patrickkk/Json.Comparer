@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Json.Comparer.TextResultReporter
 {
-    public class ComparrisonResultTextExporter
+    public class ComparisonResultTextExporter
     {
-        public static string Report(JTokenComparrisonResult comparrisonResult, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
+        public static string Report(JTokenComparisonResult comparrisonResult, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
             if (comparrisonResult != null)
             {
@@ -24,7 +24,7 @@ namespace Json.Comparer.TextResultReporter
 
         private static string ReportValue(JValueComparrisonResult valueComparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
-            if (resultsToReport.Contains(valueComparrison.ComparrisonResult))
+            if (resultsToReport.Contains(valueComparrison.ComparisonResult))
             {
                 return $"-{settings.Source1Name} value: '{valueComparrison.Source1Value?.ToString()}' - {settings.Source2Name} value:'{valueComparrison.Source2Value?.ToString()}'";
             }
@@ -34,30 +34,30 @@ namespace Json.Comparer.TextResultReporter
             }
         }
 
-        private static string ReportProperty(JPropertyComparrisonResult propertyComparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
+        private static string ReportProperty(JPropertyComparisonResult propertyComparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
-            if (propertyComparrison.PropertyValueComparissonResult?.Type == ComparedTokenType.Value)
+            if (propertyComparrison.PropertyValueComparisonResult?.Type == ComparedTokenType.Value)
             {
                 return (ReportElement(propertyComparrison, settings)
-                    + ReportValue((JValueComparrisonResult)propertyComparrison.PropertyValueComparissonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
+                    + ReportValue((JValueComparrisonResult)propertyComparrison.PropertyValueComparisonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
             }
             else
             {
                 return (ReportElement(propertyComparrison, settings)
                     + Environment.NewLine
-                    + Report(propertyComparrison.PropertyValueComparissonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
+                    + Report(propertyComparrison.PropertyValueComparisonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
             }
         }
 
         private static string ReportArray(JArrayComparrisonResult arrayComparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
-            if (resultsToReport.Contains(arrayComparrison.ComparrisonResult))
+            if (resultsToReport.Contains(arrayComparrison.ComparisonResult))
             {
-                if (arrayComparrison.ComparrisonResult == ComparisonResult.MissingInSource1 || arrayComparrison.ComparrisonResult == ComparisonResult.MissingInSource2 || arrayComparrison.ComparrisonResult == ComparisonResult.Identical)
+                if (arrayComparrison.ComparisonResult == ComparisonResult.MissingInSource1 || arrayComparrison.ComparisonResult == ComparisonResult.MissingInSource2 || arrayComparrison.ComparisonResult == ComparisonResult.Identical)
                 {
                     return ReportElement(arrayComparrison, settings);
                 }
-                var elementsToReport = arrayComparrison.ArrayElementComparrisons.Where(comparrison => resultsToReport.Contains(comparrison.ComparrisonResult));
+                var elementsToReport = arrayComparrison.ArrayElementComparrisons.Where(Comparison => resultsToReport.Contains(Comparison.ComparisonResult));
 
                 return string.Join(Environment.NewLine, elementsToReport.Select(x => Report(x, resultsToReport, settings)).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
@@ -67,16 +67,16 @@ namespace Json.Comparer.TextResultReporter
             }
         }
 
-        private static string ReportObject(JObjectComparrisonResult objectcomparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
+        private static string ReportObject(JObjectComparisonResult objectcomparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
-            if (resultsToReport.Contains(objectcomparrison.ComparrisonResult))
+            if (resultsToReport.Contains(objectcomparrison.ComparisonResult))
             {
-                if (objectcomparrison.ComparrisonResult == ComparisonResult.MissingInSource1 || objectcomparrison.ComparrisonResult == ComparisonResult.MissingInSource2 || objectcomparrison.ComparrisonResult == ComparisonResult.Identical)
+                if (objectcomparrison.ComparisonResult == ComparisonResult.MissingInSource1 || objectcomparrison.ComparisonResult == ComparisonResult.MissingInSource2 || objectcomparrison.ComparisonResult == ComparisonResult.Identical)
                 {
                     return ReportElement(objectcomparrison, settings);
                 }
 
-                var propertiesToReport = objectcomparrison.PropertyComparrisons.Where(propertyComparrison => resultsToReport.Contains(propertyComparrison.ComparrisonResult));
+                var propertiesToReport = objectcomparrison.PropertyComparisons.Where(propertyComparison => resultsToReport.Contains(propertyComparison.ComparisonResult));
 
                 return ReportElement(objectcomparrison, settings)
                     + Environment.NewLine
@@ -88,20 +88,20 @@ namespace Json.Comparer.TextResultReporter
             }
         }
 
-        private static string ReportElement(JTokenComparrisonResult result, ReporterSettings settings)
+        private static string ReportElement(JTokenComparisonResult result, ReporterSettings settings)
         {
             return $"{result.Path}-key:{result.Key}-{ComparrisonResultToFriendlyName(result, settings)}-{result.Type}";
         }
 
-        private static string ComparrisonResultToFriendlyName(JTokenComparrisonResult result, ReporterSettings settings)
+        private static string ComparrisonResultToFriendlyName(JTokenComparisonResult result, ReporterSettings settings)
         {
-            switch (result.ComparrisonResult)
+            switch (result.ComparisonResult)
             {
                 case ComparisonResult.Filtered:
                 case ComparisonResult.DifferentTypes:
                 case ComparisonResult.Different:
                 case ComparisonResult.Identical:
-                    return result.ComparrisonResult.ToString();
+                    return result.ComparisonResult.ToString();
 
                 case ComparisonResult.MissingInSource1:
                     return $"Missing in {settings.Source1Name}";

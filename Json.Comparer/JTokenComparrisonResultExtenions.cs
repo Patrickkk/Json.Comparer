@@ -12,16 +12,16 @@ namespace Json.Comparer
         /// <param name="arrayAction"></param>
         /// <param name="propertyAction"></param>
         /// <param name="valueAction"></param>
-        public static void Match(this JTokenComparrisonResult comparrisonResult,
-            Action<JObjectComparrisonResult> objectAction,
+        public static void Match(this JTokenComparisonResult comparrisonResult,
+            Action<JObjectComparisonResult> objectAction,
             Action<JArrayComparrisonResult> arrayAction,
-            Action<JPropertyComparrisonResult> propertyAction,
+            Action<JPropertyComparisonResult> propertyAction,
             Action<JValueComparrisonResult> valueAction)
         {
             switch (comparrisonResult.Type)
             {
                 case ComparedTokenType.Object:
-                    objectAction(comparrisonResult as JObjectComparrisonResult);
+                    objectAction(comparrisonResult as JObjectComparisonResult);
                     break;
 
                 case ComparedTokenType.Array:
@@ -29,7 +29,7 @@ namespace Json.Comparer
                     break;
 
                 case ComparedTokenType.Property:
-                    propertyAction(comparrisonResult as JPropertyComparrisonResult);
+                    propertyAction(comparrisonResult as JPropertyComparisonResult);
                     break;
 
                 case ComparedTokenType.Value:
@@ -51,22 +51,22 @@ namespace Json.Comparer
         /// <param name="propertyFunction"></param>
         /// <param name="valueFunction"></param>
         /// <returns></returns>
-        public static TResult Match<TResult>(this JTokenComparrisonResult comparrisonResult,
-            Func<JObjectComparrisonResult, TResult> objectFunction,
+        public static TResult Match<TResult>(this JTokenComparisonResult comparrisonResult,
+            Func<JObjectComparisonResult, TResult> objectFunction,
             Func<JArrayComparrisonResult, TResult> arrayFunction,
-            Func<JPropertyComparrisonResult, TResult> propertyFunction,
+            Func<JPropertyComparisonResult, TResult> propertyFunction,
             Func<JValueComparrisonResult, TResult> valueFunction)
         {
             switch (comparrisonResult.Type)
             {
                 case ComparedTokenType.Object:
-                    return objectFunction(comparrisonResult as JObjectComparrisonResult);
+                    return objectFunction(comparrisonResult as JObjectComparisonResult);
 
                 case ComparedTokenType.Array:
                     return arrayFunction(comparrisonResult as JArrayComparrisonResult);
 
                 case ComparedTokenType.Property:
-                    return propertyFunction(comparrisonResult as JPropertyComparrisonResult);
+                    return propertyFunction(comparrisonResult as JPropertyComparisonResult);
 
                 case ComparedTokenType.Value:
                     return valueFunction(comparrisonResult as JValueComparrisonResult);
