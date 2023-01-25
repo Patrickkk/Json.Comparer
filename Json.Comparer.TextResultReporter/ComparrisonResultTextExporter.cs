@@ -22,11 +22,11 @@ namespace Json.Comparer.TextResultReporter
             }
         }
 
-        private static string ReportValue(JValueComparisonResult valueComparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
+        private static string ReportValue(JValueComparisonResult valueComparison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
-            if (resultsToReport.Contains(valueComparrison.ComparisonResult))
+            if (resultsToReport.Contains(valueComparison.ComparisonResult))
             {
-                return $"-{settings.Source1Name} value: '{valueComparrison.Source1Value?.ToString()}' - {settings.Source2Name} value:'{valueComparrison.Source2Value?.ToString()}'";
+                return $"-{settings.Source1Name} value: '{valueComparison.Source1Value?.ToString()}' - {settings.Source2Name} value:'{valueComparison.Source2Value?.ToString()}'";
             }
             else
             {
@@ -34,30 +34,30 @@ namespace Json.Comparer.TextResultReporter
             }
         }
 
-        private static string ReportProperty(JPropertyComparisonResult propertyComparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
+        private static string ReportProperty(JPropertyComparisonResult propertyComparison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
-            if (propertyComparrison.PropertyValueComparisonResult?.Type == ComparedTokenType.Value)
+            if (propertyComparison.PropertyValueComparisonResult?.Type == ComparedTokenType.Value)
             {
-                return (ReportElement(propertyComparrison, settings)
-                    + ReportValue((JValueComparisonResult)propertyComparrison.PropertyValueComparisonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
+                return (ReportElement(propertyComparison, settings)
+                    + ReportValue((JValueComparisonResult)propertyComparison.PropertyValueComparisonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
             }
             else
             {
-                return (ReportElement(propertyComparrison, settings)
+                return (ReportElement(propertyComparison, settings)
                     + Environment.NewLine
-                    + Report(propertyComparrison.PropertyValueComparisonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
+                    + Report(propertyComparison.PropertyValueComparisonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
             }
         }
 
-        private static string ReportArray(JArrayComparrisonResult arrayComparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
+        private static string ReportArray(JArrayComparrisonResult arrayComparison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
-            if (resultsToReport.Contains(arrayComparrison.ComparisonResult))
+            if (resultsToReport.Contains(arrayComparison.ComparisonResult))
             {
-                if (arrayComparrison.ComparisonResult == ComparisonResult.MissingInSource1 || arrayComparrison.ComparisonResult == ComparisonResult.MissingInSource2 || arrayComparrison.ComparisonResult == ComparisonResult.Identical)
+                if (arrayComparison.ComparisonResult == ComparisonResult.MissingInSource1 || arrayComparison.ComparisonResult == ComparisonResult.MissingInSource2 || arrayComparison.ComparisonResult == ComparisonResult.Identical)
                 {
-                    return ReportElement(arrayComparrison, settings);
+                    return ReportElement(arrayComparison, settings);
                 }
-                var elementsToReport = arrayComparrison.ArrayElementComparrisons.Where(Comparison => resultsToReport.Contains(Comparison.ComparisonResult));
+                var elementsToReport = arrayComparison.ArrayElementComparrisons.Where(Comparison => resultsToReport.Contains(Comparison.ComparisonResult));
 
                 return string.Join(Environment.NewLine, elementsToReport.Select(x => Report(x, resultsToReport, settings)).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
@@ -67,18 +67,18 @@ namespace Json.Comparer.TextResultReporter
             }
         }
 
-        private static string ReportObject(JObjectComparisonResult objectcomparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
+        private static string ReportObject(JObjectComparisonResult objectcomparison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
-            if (resultsToReport.Contains(objectcomparrison.ComparisonResult))
+            if (resultsToReport.Contains(objectcomparison.ComparisonResult))
             {
-                if (objectcomparrison.ComparisonResult == ComparisonResult.MissingInSource1 || objectcomparrison.ComparisonResult == ComparisonResult.MissingInSource2 || objectcomparrison.ComparisonResult == ComparisonResult.Identical)
+                if (objectcomparison.ComparisonResult == ComparisonResult.MissingInSource1 || objectcomparison.ComparisonResult == ComparisonResult.MissingInSource2 || objectcomparison.ComparisonResult == ComparisonResult.Identical)
                 {
-                    return ReportElement(objectcomparrison, settings);
+                    return ReportElement(objectcomparison, settings);
                 }
 
-                var propertiesToReport = objectcomparrison.PropertyComparisons.Where(propertyComparison => resultsToReport.Contains(propertyComparison.ComparisonResult));
+                var propertiesToReport = objectcomparison.PropertyComparisons.Where(propertyComparison => resultsToReport.Contains(propertyComparison.ComparisonResult));
 
-                return ReportElement(objectcomparrison, settings)
+                return ReportElement(objectcomparison, settings)
                     + Environment.NewLine
                     + string.Join(Environment.NewLine, propertiesToReport.Select(x => Report(x, resultsToReport, settings)).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
