@@ -2,77 +2,77 @@
 
 namespace Json.Comparer
 {
-    public static class JTokenComparrisonResultExtenions
+    public static class JTokenComparisonResultExtenions
     {
         /// <summary>
-        /// Match different types of comparrisonResults depending on the type.
+        /// Match different types of comparisonResults depending on the type.
         /// </summary>
-        /// <param name="comparrisonResult"></param>
+        /// <param name="comparisonResult"></param>
         /// <param name="objectAction"></param>
         /// <param name="arrayAction"></param>
         /// <param name="propertyAction"></param>
         /// <param name="valueAction"></param>
-        public static void Match(this JTokenComparisonResult comparrisonResult,
+        public static void Match(this JTokenComparisonResult comparisonResult,
             Action<JObjectComparisonResult> objectAction,
-            Action<JArrayComparrisonResult> arrayAction,
+            Action<JArrayComparisonResult> arrayAction,
             Action<JPropertyComparisonResult> propertyAction,
             Action<JValueComparisonResult> valueAction)
         {
-            switch (comparrisonResult.Type)
+            switch (comparisonResult.Type)
             {
                 case ComparedTokenType.Object:
-                    objectAction(comparrisonResult as JObjectComparisonResult);
+                    objectAction(comparisonResult as JObjectComparisonResult);
                     break;
 
                 case ComparedTokenType.Array:
-                    arrayAction(comparrisonResult as JArrayComparrisonResult);
+                    arrayAction(comparisonResult as JArrayComparisonResult);
                     break;
 
                 case ComparedTokenType.Property:
-                    propertyAction(comparrisonResult as JPropertyComparisonResult);
+                    propertyAction(comparisonResult as JPropertyComparisonResult);
                     break;
 
                 case ComparedTokenType.Value:
-                    valueAction(comparrisonResult as JValueComparisonResult);
+                    valueAction(comparisonResult as JValueComparisonResult);
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(comparrisonResult.Type));
+                    throw new ArgumentOutOfRangeException(nameof(comparisonResult.Type));
             }
         }
 
         /// <summary>
-        /// Match different types of comparrisonResults depending on the type.
+        /// Match different types of comparisonResults depending on the type.
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
-        /// <param name="comparrisonResult"></param>
+        /// <param name="comparisonResult"></param>
         /// <param name="objectFunction"></param>
         /// <param name="arrayFunction"></param>
         /// <param name="propertyFunction"></param>
         /// <param name="valueFunction"></param>
         /// <returns></returns>
-        public static TResult Match<TResult>(this JTokenComparisonResult comparrisonResult,
+        public static TResult Match<TResult>(this JTokenComparisonResult comparisonResult,
             Func<JObjectComparisonResult, TResult> objectFunction,
-            Func<JArrayComparrisonResult, TResult> arrayFunction,
+            Func<JArrayComparisonResult, TResult> arrayFunction,
             Func<JPropertyComparisonResult, TResult> propertyFunction,
             Func<JValueComparisonResult, TResult> valueFunction)
         {
-            switch (comparrisonResult.Type)
+            switch (comparisonResult.Type)
             {
                 case ComparedTokenType.Object:
-                    return objectFunction(comparrisonResult as JObjectComparisonResult);
+                    return objectFunction(comparisonResult as JObjectComparisonResult);
 
                 case ComparedTokenType.Array:
-                    return arrayFunction(comparrisonResult as JArrayComparrisonResult);
+                    return arrayFunction(comparisonResult as JArrayComparisonResult);
 
                 case ComparedTokenType.Property:
-                    return propertyFunction(comparrisonResult as JPropertyComparisonResult);
+                    return propertyFunction(comparisonResult as JPropertyComparisonResult);
 
                 case ComparedTokenType.Value:
-                    return valueFunction(comparrisonResult as JValueComparisonResult);
+                    return valueFunction(comparisonResult as JValueComparisonResult);
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(comparrisonResult.Type));
+                    throw new ArgumentOutOfRangeException(nameof(comparisonResult.Type));
             }
         }
     }

@@ -27,9 +27,9 @@ namespace Json.Comparer.Tests
 
             compareResult.ComparisonResult.Should().Be(ComparisonResult.Different);
             var childrenComparison = (JPropertyComparisonResult)compareResult.PropertyComparisons.First(x => x.Key == "Children");
-            var childrenValueComparison = (JArrayComparrisonResult)childrenComparison.PropertyValueComparisonResult;
+            var childrenValueComparison = (JArrayComparisonResult)childrenComparison.PropertyValueComparisonResult;
             childrenValueComparison.ComparisonResult.Should().Be(ComparisonResult.Different);
-            childrenValueComparison.ArrayElementComparrisons.All(x => x.ComparisonResult == ComparisonResult.MissingInSource2).Should().Be(true);
+            childrenValueComparison.ArrayElementComparisons.All(x => x.ComparisonResult == ComparisonResult.MissingInSource2).Should().Be(true);
 
             var report = ComparisonResultTextExporter.Report(compareResult, new ComparisonResult[] { ComparisonResult.Different, ComparisonResult.MissingInSource1, ComparisonResult.MissingInSource2 }, new ReporterSettings { Source1Name = "QA", Source2Name = "PROD" });
 

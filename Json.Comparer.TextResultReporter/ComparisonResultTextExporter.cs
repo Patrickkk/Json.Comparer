@@ -49,7 +49,7 @@ namespace Json.Comparer.TextResultReporter
             }
         }
 
-        private static string ReportArray(JArrayComparrisonResult arrayComparison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
+        private static string ReportArray(JArrayComparisonResult arrayComparison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
             if (resultsToReport.Contains(arrayComparison.ComparisonResult))
             {
@@ -57,7 +57,7 @@ namespace Json.Comparer.TextResultReporter
                 {
                     return ReportElement(arrayComparison, settings);
                 }
-                var elementsToReport = arrayComparison.ArrayElementComparrisons.Where(Comparison => resultsToReport.Contains(Comparison.ComparisonResult));
+                var elementsToReport = arrayComparison.ArrayElementComparisons.Where(Comparison => resultsToReport.Contains(Comparison.ComparisonResult));
 
                 return string.Join(Environment.NewLine, elementsToReport.Select(x => Report(x, resultsToReport, settings)).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
@@ -90,10 +90,10 @@ namespace Json.Comparer.TextResultReporter
 
         private static string ReportElement(JTokenComparisonResult result, ReporterSettings settings)
         {
-            return $"{result.Path}-key:{result.Key}-{ComparrisonResultToFriendlyName(result, settings)}-{result.Type}";
+            return $"{result.Path}-key:{result.Key}-{ComparisonResultToFriendlyName(result, settings)}-{result.Type}";
         }
 
-        private static string ComparrisonResultToFriendlyName(JTokenComparisonResult result, ReporterSettings settings)
+        private static string ComparisonResultToFriendlyName(JTokenComparisonResult result, ReporterSettings settings)
         {
             switch (result.ComparisonResult)
             {

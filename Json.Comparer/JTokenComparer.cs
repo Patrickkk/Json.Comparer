@@ -12,11 +12,11 @@ namespace Json.Comparer
         private readonly IArrayKeySelector arrayKeySelector;
         private readonly IEnumerable<IComparisonFilter> filters;
         private readonly IValueConverter valueConverter;
-        private readonly IEnumerable<ComparisonResult> filteredMissingComparrisonResults;
+        private readonly IEnumerable<ComparisonResult> filteredMissingComparisonResults;
 
         public JTokenComparer(IArrayKeySelector arrayKeySelector, IEnumerable<IComparisonFilter> filters, IEnumerable<ComparisonResult> filteredMissingComparrisonResults, IValueConverter valueConverter)
         {
-            this.filteredMissingComparrisonResults = filteredMissingComparrisonResults;
+            this.filteredMissingComparisonResults = filteredMissingComparrisonResults;
             this.filters = filters;
             this.arrayKeySelector = arrayKeySelector;
             this.valueConverter = valueConverter;
@@ -146,7 +146,7 @@ namespace Json.Comparer
 
         private ComparisonResult MissingOrFiltered(ComparisonResult result)
         {
-            if (filteredMissingComparrisonResults.Contains(result))
+            if (filteredMissingComparisonResults.Contains(result))
             {
                 return ComparisonResult.Filtered;
             }
@@ -163,22 +163,22 @@ namespace Json.Comparer
         /// <param name="token1"></param>
         /// <param name="token2"></param>
         /// <returns></returns>
-        public virtual JArrayComparrisonResult CompareArrays(string key, [AllowNull]JArray token1, [AllowNull]JArray token2)
+        public virtual JArrayComparisonResult CompareArrays(string key, [AllowNull]JArray token1, [AllowNull]JArray token2)
         {
             if (MissingOrFiltered(key, token1, token2))
             {
-                return MissingOrFilteredResult<JArrayComparrisonResult>(key, token1, token2);
+                return MissingOrFilteredResult<JArrayComparisonResult>(key, token1, token2);
             }
 
-            var arrayContentComparrisonResult = OuterJoinStringifyKey(token1.Children(), token2.Children(), arrayKeySelector.SelectArrayKey)
+            var arrayContentComparisonResult = OuterJoinStringifyKey(token1.Children(), token2.Children(), arrayKeySelector.SelectArrayKey)
                 .Select(CompareTokens);
 
-            return new JArrayComparrisonResult
+            return new JArrayComparisonResult
             {
                 Key = key,
                 Path = token1.Path,
-                ComparisonResult = ComparisonResultFromCollection(arrayContentComparrisonResult),
-                ArrayElementComparrisons = arrayContentComparrisonResult
+                ComparisonResult = ComparisonResultFromCollection(arrayContentComparisonResult),
+                ArrayElementComparisons = arrayContentComparisonResult
             };
         }
 

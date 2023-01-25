@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Json.Comparer.Tests
 {
-    public class TestComparrisonFilters
+    public class TestComparisonFilters
     {
         [Fact]
         public void WhenfilteringAllNotDifferenceShouldReported()
