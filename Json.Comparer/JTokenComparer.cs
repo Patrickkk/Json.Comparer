@@ -119,11 +119,11 @@ namespace Json.Comparer
         /// <param name="token1"></param>
         /// <param name="token2"></param>
         /// <returns></returns>
-        public virtual JValueComparrisonResult CompareValue(string key, [AllowNull]JValue token1, [AllowNull]JValue token2)
+        public virtual JValueComparisonResult CompareValue(string key, [AllowNull]JValue token1, [AllowNull]JValue token2)
         {
             if (ShouldBeFiltered(key, token1, token2))
             {
-                return new JValueComparrisonResult
+                return new JValueComparisonResult
                 {
                     Key = key,
                     Path = FirstNonNullValueOrDefault("", token1?.Path, token2?.Path),
@@ -131,10 +131,10 @@ namespace Json.Comparer
                     Source2Value = token2.Value?.ToString().EmptyIfNull(),
                 };
             }
-            if (token1 == null) { return new JValueComparrisonResult { Key = key, Path = token2.Path, ComparisonResult = MissingOrFiltered(ComparisonResult.MissingInSource1), Source1Value = null, Source2Value = valueConverter.Convert(token2.Value?.ToString()) }; }
-            if (token2 == null) { return new JValueComparrisonResult { Key = key, Path = token1.Path, ComparisonResult = MissingOrFiltered(ComparisonResult.MissingInSource2), Source1Value = valueConverter.Convert(token1.Value?.ToString()), Source2Value = null }; }
+            if (token1 == null) { return new JValueComparisonResult { Key = key, Path = token2.Path, ComparisonResult = MissingOrFiltered(ComparisonResult.MissingInSource1), Source1Value = null, Source2Value = valueConverter.Convert(token2.Value?.ToString()) }; }
+            if (token2 == null) { return new JValueComparisonResult { Key = key, Path = token1.Path, ComparisonResult = MissingOrFiltered(ComparisonResult.MissingInSource2), Source1Value = valueConverter.Convert(token1.Value?.ToString()), Source2Value = null }; }
 
-            return new JValueComparrisonResult
+            return new JValueComparisonResult
             {
                 Key = key,
                 Path = token1.Path,

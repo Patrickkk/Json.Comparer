@@ -16,7 +16,7 @@ namespace Json.Comparer
             Action<JObjectComparisonResult> objectAction,
             Action<JArrayComparrisonResult> arrayAction,
             Action<JPropertyComparisonResult> propertyAction,
-            Action<JValueComparrisonResult> valueAction)
+            Action<JValueComparisonResult> valueAction)
         {
             switch (comparrisonResult.Type)
             {
@@ -33,7 +33,7 @@ namespace Json.Comparer
                     break;
 
                 case ComparedTokenType.Value:
-                    valueAction(comparrisonResult as JValueComparrisonResult);
+                    valueAction(comparrisonResult as JValueComparisonResult);
                     break;
 
                 default:
@@ -55,7 +55,7 @@ namespace Json.Comparer
             Func<JObjectComparisonResult, TResult> objectFunction,
             Func<JArrayComparrisonResult, TResult> arrayFunction,
             Func<JPropertyComparisonResult, TResult> propertyFunction,
-            Func<JValueComparrisonResult, TResult> valueFunction)
+            Func<JValueComparisonResult, TResult> valueFunction)
         {
             switch (comparrisonResult.Type)
             {
@@ -69,7 +69,7 @@ namespace Json.Comparer
                     return propertyFunction(comparrisonResult as JPropertyComparisonResult);
 
                 case ComparedTokenType.Value:
-                    return valueFunction(comparrisonResult as JValueComparrisonResult);
+                    return valueFunction(comparrisonResult as JValueComparisonResult);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(comparrisonResult.Type));

@@ -22,7 +22,7 @@ namespace Json.Comparer.TextResultReporter
             }
         }
 
-        private static string ReportValue(JValueComparrisonResult valueComparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
+        private static string ReportValue(JValueComparisonResult valueComparrison, IEnumerable<ComparisonResult> resultsToReport, ReporterSettings settings)
         {
             if (resultsToReport.Contains(valueComparrison.ComparisonResult))
             {
@@ -39,7 +39,7 @@ namespace Json.Comparer.TextResultReporter
             if (propertyComparrison.PropertyValueComparisonResult?.Type == ComparedTokenType.Value)
             {
                 return (ReportElement(propertyComparrison, settings)
-                    + ReportValue((JValueComparrisonResult)propertyComparrison.PropertyValueComparisonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
+                    + ReportValue((JValueComparisonResult)propertyComparrison.PropertyValueComparisonResult, resultsToReport, settings)).TrimEnd(Environment.NewLine.ToCharArray());
             }
             else
             {

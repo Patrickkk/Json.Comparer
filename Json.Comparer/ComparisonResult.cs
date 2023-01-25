@@ -1,7 +1,7 @@
 ﻿namespace Json.Comparer
 {
     /// <summary>
-    /// The result of a comparrison.
+    /// The result of a comparison.
     /// </summary>
     public enum ComparisonResult
     {

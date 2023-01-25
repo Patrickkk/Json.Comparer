@@ -5,7 +5,7 @@ namespace Json.Comparer
     /// <summary>
     /// The result of a Comparison of JToken.
     /// </summary>
-    public class JValueComparrisonResult : JTokenComparisonResult
+    public class JValueComparisonResult : JTokenComparisonResult
     {
         /// <summary>
         /// The type of JToken compared

@@ -14,8 +14,11 @@ namespace Json.Comparer.Tests
         [Fact]
         public void ComparisonWithMissingChildrenShouldReportDifference()
         {
-            var complexObject = new ComplexObject(true);
-            complexObject.DateTimeProperty = DateTime.UtcNow;
+            var complexObject = new ComplexObject(true)
+            {
+                DateTimeProperty = DateTime.UtcNow
+            };
+
             var complexObject2 = new ComplexObject(false);
             var jobject = JToken.FromObject(complexObject);
             var jobject2 = JToken.FromObject(complexObject2);
