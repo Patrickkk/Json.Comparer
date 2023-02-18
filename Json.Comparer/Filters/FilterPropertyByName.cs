@@ -8,7 +8,7 @@ using NullGuard;
 
 namespace Json.Comparer.Filters
 {
-    public class FilterPropertyByName : IComparrisonFilter
+    public class FilterPropertyByName : IComparisonFilter
     {
         private readonly string propertyName;
 

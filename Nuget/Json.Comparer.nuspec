@@ -9,8 +9,8 @@
     <licenseUrl>https://github.com/Patrickkk/Json.Comparer/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/Patrickkk/Json.Comparer/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Deep compares 2 objects or jtokens/jarrays/jobjects and returns the the result of the comparrison per element/property. allowing for reporting of difference between all kinds of objects.</description>
-    <summary>Deep compares 2 objects or JTokens and returns the the result of the comparrison per element/property. allowing for reporting of difference between all kinds of objects.</summary>
+    <description>Deep compares 2 objects or jtokens/jarrays/jobjects and returns the the result of the Comparison per element/property. allowing for reporting of difference between all kinds of objects.</description>
+    <summary>Deep compares 2 objects or JTokens and returns the the result of the Comparison per element/property. allowing for reporting of difference between all kinds of objects.</summary>
     <releaseNotes>
       - switch to netstandard
     </releaseNotes>

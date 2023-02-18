@@ -1,7 +1,7 @@
 ﻿namespace Json.Comparer
 {
     /// <summary>
-    /// The result of a comparrison.
+    /// The result of a comparison.
     /// </summary>
     public enum ComparisonResult
     {
@@ -31,7 +31,7 @@
         DifferentTypes,
 
         /// <summary>
-        /// The tokens comparrison was skipped and filtered out.
+        /// The tokens Comparison was skipped and filtered out.
         /// </summary>
         Filtered,
     }

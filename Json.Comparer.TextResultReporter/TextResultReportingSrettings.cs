@@ -2,7 +2,7 @@
 
 namespace Json.Comparer.TextResultReporter
 {
-    public class TextResultReportingSrettings
+    public class TextResultReportingSettings
     {
         public IEnumerable<ComparisonResult> resultsToReport { get; set; } = new HashSet<ComparisonResult>();
 

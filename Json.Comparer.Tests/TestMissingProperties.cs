@@ -14,10 +14,10 @@ namespace Json.Comparer.Tests
             var jobject = JToken.FromObject(new SimpleObjectWithExtraProperty());
             var jobject2 = JToken.FromObject(new SimpleObject());
 
-            var compareResult = (JObjectComparrisonResult)new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
+            var compareResult = (JObjectComparisonResult)new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
 
-            compareResult.ComparrisonResult.Should().Be(ComparisonResult.Different, because: "The JObjects are created from different type");
-            compareResult.PropertyComparrisons.First(x => x.Key == "ExtraIntProperty").ComparrisonResult.Should().Be(ComparisonResult.MissingInSource2);
+            compareResult.ComparisonResult.Should().Be(ComparisonResult.Different, because: "The JObjects are created from different type");
+            compareResult.PropertyComparisons.First(x => x.Key == "ExtraIntProperty").ComparisonResult.Should().Be(ComparisonResult.MissingInSource2);
         }
 
         [Fact]
@@ -26,10 +26,10 @@ namespace Json.Comparer.Tests
             var jobject = JToken.FromObject(new SimpleObject());
             var jobject2 = JToken.FromObject(new SimpleObjectWithExtraProperty());
 
-            var compareResult = (JObjectComparrisonResult)new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
+            var compareResult = (JObjectComparisonResult)new JTokenComparer(new IndexArrayKeySelector()).CompareTokens("root", jobject, jobject2);
 
-            compareResult.ComparrisonResult.Should().Be(ComparisonResult.Different, because: "The JObjects are created from different type");
-            compareResult.PropertyComparrisons.First(x => x.Key == "ExtraIntProperty").ComparrisonResult.Should().Be(ComparisonResult.MissingInSource1);
+            compareResult.ComparisonResult.Should().Be(ComparisonResult.Different, because: "The JObjects are created from different type");
+            compareResult.PropertyComparisons.First(x => x.Key == "ExtraIntProperty").ComparisonResult.Should().Be(ComparisonResult.MissingInSource1);
         }
     }
 }

@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Json.Comparer.Tests.Filters
 {
-    internal class FilterAll : IComparrisonFilter
+    internal class FilterAll : IComparisonFilter
     {
         public bool ShouldBeFiltered(string key, JToken token1, JToken token2)
         {

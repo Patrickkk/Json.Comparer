@@ -5,7 +5,7 @@ namespace Json.Comparer
     /// <summary>
     /// ComparisonResult for JArrayTokens
     /// </summary>
-    public class JArrayComparrisonResult : JTokenComparrisonResult
+    public class JArrayComparisonResult : JTokenComparisonResult
     {
         /// <summary>
         /// The type of JToken compared
@@ -15,6 +15,6 @@ namespace Json.Comparer
         /// <summary>
         /// The comparrisonResults for all elements in the array.
         /// </summary>
-        public IEnumerable<JTokenComparrisonResult> ArrayElementComparrisons { get; set; } = new List<JTokenComparrisonResult>();
+        public IEnumerable<JTokenComparisonResult> ArrayElementComparisons { get; set; } = new List<JTokenComparisonResult>();
     }
 }

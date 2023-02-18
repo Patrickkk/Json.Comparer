@@ -22,9 +22,9 @@ namespace Json.Comparer.Tests
             var jobject = JToken.FromObject(parent1);
             var jobject2 = JToken.FromObject(parent2);
 
-            var result = (JObjectComparrisonResult)new JTokenComparer(new CustomArrayKeySelector()).CompareTokens("root", jobject, jobject2);
+            var result = (JObjectComparisonResult)new JTokenComparer(new CustomArrayKeySelector()).CompareTokens("root", jobject, jobject2);
 
-            result.ComparrisonResult.Should().Be(ComparisonResult.Identical);
+            result.ComparisonResult.Should().Be(ComparisonResult.Identical);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace Json.Comparer.Tests
             var jobject = JToken.FromObject(parent1);
             var jobject2 = JToken.FromObject(parent2);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => (JObjectComparrisonResult)new JTokenComparer(new CustomArrayKeySelector()).CompareTokens("root", jobject, jobject2));
+            Assert.Throws<ArgumentOutOfRangeException>(() => (JObjectComparisonResult)new JTokenComparer(new CustomArrayKeySelector()).CompareTokens("root", jobject, jobject2));
         }
     }
 }
